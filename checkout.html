@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleHub | Secure Checkout</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+ <link rel="stylesheet" href="checkout.css">
+ <script src="checkout.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="#" class="logo">Style<span>Hub</span></a>
+            <ul class="nav-links">
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                    <li><a href="checkout.html" class="active">Checkout</a></li>
+                    <li><a href="wishlist.html">Wishlist</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="FAQ.html">FAQ</a></li>
+                </ul>
+            <div class="nav-actions">
+                <div class="action-icon">
+                    <a href="wishlist.html"><i class="fas fa-heart"></i></a>
+                    <span class="icon-badge" id="wishlistCount">0</span>
+                </div>
+                <div class="action-icon">
+                    <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+                    <span class="icon-badge" id="cartCount">0</span>
+                </div>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Checkout Section -->
+    <section class="checkout-section">
+        <div class="container">
+            <h2 class="section-title">Secure Checkout</h2>
+            
+            <div class="checkout-layout">
+                <!-- Checkout Form -->
+                <div class="checkout-form">
+                    <div class="form-section">
+                        <h3 class="form-section-title">Shipping Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Full Name <span>*</span></label>
+                                <input type="text" class="form-input" id="fullName" placeholder="John Smith">
+                                <div class="error-message" id="nameError">Please enter your full name</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Email Address <span>*</span></label>
+                                <input type="email" class="form-input" id="email" placeholder="john@example.com">
+                                <div class="error-message" id="emailError">Please enter a valid email</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Phone Number <span>*</span></label>
+                                <input type="tel" class="form-input" id="phone" placeholder="(123) 456-7890">
+                                <div class="error-message" id="phoneError">Please enter a valid phone number</div>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label class="form-label">Shipping Address <span>*</span></label>
+                                <input type="text" class="form-input" id="address" placeholder="123 Main St">
+                                <div class="error-message" id="addressError">Please enter your shipping address</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Country <span>*</span></label>
+                                <select class="form-select" id="country">
+                                    <option value="">Select Country</option>
+                                    <option value="us">United States</option>
+                                    <option value="ca">Canada</option>
+                                    <option value="uk">United Kingdom</option>
+                                    <option value="au">Australia</option>
+                                    <option value="de">Germany</option>
+                                    <option value="fr">Ethiopia</option>
+                                </select>
+                                <div class="error-message" id="countryError">Please select your country</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">City <span>*</span></label>
+                                <input type="text" class="form-input" id="city" placeholder="Addis Ababa">
+                                <div class="error-message" id="cityError">Please enter your city</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">ZIP / Postal Code <span>*</span></label>
+                                <input type="text" class="form-input" id="zip" placeholder="10001">
+                                <div class="error-message" id="zipError">Please enter a valid ZIP code</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3 class="form-section-title">Payment Method</h3>
+                        <div class="payment-methods">
+                            <div class="payment-method active" id="cardMethod">
+                                <i class="far fa-credit-card"></i>
+                                <div>Credit Card</div>
+                            </div>
+                            <div class="payment-method" id="codMethod">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <div>Cash on Delivery</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-details" id="cardDetails">
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label class="form-label">Card Number <span>*</span></label>
+                                    <input type="text" class="form-input" id="cardNumber" placeholder="1234 5678 9012 3456">
+                                    <div class="error-message" id="cardNumberError">Please enter a valid card number</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Expiration Date <span>*</span></label>
+                                    <input type="text" class="form-input" id="expDate" placeholder="MM/YY">
+                                    <div class="error-message" id="expDateError">Please enter a valid expiration date</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">CVV <span>*</span></label>
+                                    <input type="text" class="form-input" id="cvv" placeholder="123">
+                                    <div class="error-message" id="cvvError">Please enter a valid CVV</div>
+                                </div>
+                                
+                                <div class="form-group full-width">
+                                    <label class="form-label">Cardholder Name <span>*</span></label>
+                                    <input type="text" class="form-input" id="cardName" placeholder="John Smith">
+                                    <div class="error-message" id="cardNameError">Please enter cardholder name</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3 class="form-section-title">Additional Information</h3>
+                        <div class="form-group">
+                            <label class="form-label">Order Notes (Optional)</label>
+                            <textarea class="form-input" id="orderNotes" placeholder="Delivery instructions, special requests..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <h3 class="summary-title">Order Summary</h3>
+                    
+                    <div class="order-items" id="orderItems">
+                        <!-- Order items will be dynamically inserted here -->
+                    </div>
+                    
+                    <div class="summary-row">
+                        <div class="summary-label">Subtotal</div>
+                        <div class="summary-value" id="subtotal">$0.00</div>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <div class="summary-label">Shipping</div>
+                        <div class="summary-value" id="shipping">$0.00</div>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <div class="summary-label">Tax</div>
+                        <div class="summary-value" id="tax">$0.00</div>
+                    </div>
+                    
+                    <div class="summary-row summary-total">
+                        <div class="summary-label">Total</div>
+                        <div class="summary-value" id="total">$0.00</div>
+                    </div>
+                    
+                    <button class="btn btn-place-order" id="placeOrderBtn" disabled>Place Order</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>StyleHub</h3>
+                    <p>Premium men's fashion for the modern gentleman. Quality craftsmanship meets contemporary style.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Customer Service</h3>
+                    <ul class="footer-links">
+                        <li><a href="FAQ.html">FAQs</a></li>
+                        <li><a href="FAQ.html">Shipping Policy</a></li>
+                        <li><a href="return.html">Returns & Exchanges</a></li>
+                        <li><a href="#">Order Tracking</a></li>
+                        <li><a href="sizeguide.html">Size Guide</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to get special offers, free giveaways, and new product alerts.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Your email address">
+                        <button type="submit" class="btn newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 StyleHub. All Rights Reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Confirmation Modal -->
+    <div class="confirmation-modal" id="confirmationModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 class="modal-title">Order Confirmed!</h3>
+            <p class="modal-text">
+                Thank you for your purchase. Your order <span class="order-id" id="orderId">#VG-2023-001</span> has been placed successfully.
+                A confirmation email has been sent to <span id="confirmEmail">john@example.com</span>.
+            </p>
+            <a href="shop.html" class="btn btn-place-order">
+                <i class="fas fa-bag-shopping"></i> Continue Shopping
+            </a>
+        </div>
+    </div>
+</body>
+</html>
