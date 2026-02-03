@@ -1,0 +1,2294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Habesha Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <style>
+        :root {
+            /* Light Mode Colors */
+            --bg-primary-light: #f8f9fa;
+            --surface-1-light: #ffffff;
+            --surface-2-light: #f1f3f5;
+            --surface-3-light: #e9ecef;
+            --primary-light: #1a5c40;
+            --primary-hover-light: #0c4b33;
+            --secondary-light: #e63946;
+            --success-light: #2e8b57;
+            --warning-light: #ffaa00;
+            --error-light: #e63946;
+            --on-surface-light: #212529;
+            --on-surface-medium-light: #495057;
+            --on-surface-disabled-light: #adb5bd;
+            
+            /* Dark Mode Colors */
+            --bg-primary-dark: #141414;
+            --surface-1-dark: #282b2a;
+            --surface-2-dark: #d4cec2;
+            --surface-3-dark: #4caf50;
+            --primary-dark: #f0e800;
+            --primary-hover-dark: #fffb3d;
+            --secondary-dark: #e74c3c;
+            --success-dark: #2ecc71;
+            --warning-dark: #f39c12;
+            --error-dark: #e74c3c;
+            --on-surface-dark: #ffffff;
+            --on-surface-medium-dark: rgba(255, 255, 255, 0.87);
+            --on-surface-disabled-dark: rgba(255, 255, 255, 0.38);
+            
+            /* Current Theme Variables */
+            --bg-primary: var(--bg-primary-light);
+            --surface-1: var(--surface-1-light);
+            --surface-2: var(--surface-2-light);
+            --surface-3: var(--surface-3-light);
+            --primary: var(--primary-light);
+            --primary-hover: var(--primary-hover-light);
+            --secondary: var(--secondary-light);
+            --success: var(--success-light);
+            --warning: var(--warning-light);
+            --error: var(--error-light);
+            --on-surface: var(--on-surface-light);
+            --on-surface-medium: var(--on-surface-medium-light);
+            --on-surface-disabled: var(--on-surface-disabled-light);
+            
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            
+            /* Border radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            
+            /* Transitions */
+            --transition-short: 100ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-medium: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Dark Mode */
+        body.dark-mode {
+            --bg-primary: var(--bg-primary-dark);
+            --surface-1: var(--surface-1-dark);
+            --surface-2: var(--surface-2-dark);
+            --surface-3: var(--surface-3-dark);
+            --primary: var(--primary-dark);
+            --primary-hover: var(--primary-hover-dark);
+            --secondary: var(--secondary-dark);
+            --success: var(--success-dark);
+            --warning: var(--warning-dark);
+            --error: var(--error-dark);
+            --on-surface: var(--on-surface-dark);
+            --on-surface-medium: var(--on-surface-medium-dark);
+            --on-surface-disabled: var(--on-surface-disabled-dark);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--on-surface);
+            min-height: 100vh;
+            transition: background-color var(--transition-medium), color var(--transition-medium);
+        }
+        
+        /* Auth Modal */
+        .auth-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-medium);
+        }
+        
+        .auth-modal.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .auth-container {
+            background-color: var(--surface-1);
+            padding: var(--space-xl);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .auth-title {
+            margin-bottom: var(--space-lg);
+            text-align: center;
+            font-size: 24px;
+        }
+        
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+        
+        .auth-input {
+            padding: var(--space-md);
+            border: 1px solid var(--surface-3);
+            border-radius: var(--radius-sm);
+            background-color: var(--surface-2);
+            color: var(--on-surface);
+            transition: all var(--transition-short);
+        }
+        
+        .auth-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(26, 92, 64, 0.2);
+        }
+        
+        .auth-btn {
+            background-color: var(--primary);
+            color: var(--on-surface);
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: var(--space-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-short);
+        }
+        
+        .auth-btn:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .auth-toggle {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            text-align: center;
+            margin-top: var(--space-md);
+        }
+        
+        .auth-error {
+            color: var(--error);
+            font-size: 14px;
+            margin-top: var(--space-xs);
+            text-align: center;
+        }
+        
+        /* Dashboard Layout */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background-color: var(--surface-1);
+            padding: var(--space-lg);
+            border-right: 1px solid var(--surface-3);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            transition: all var(--transition-medium);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-xl);
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .logo-icon {
+            color: var(--primary);
+            font-size: 28px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        
+        .nav-item {
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-short);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--primary);
+            color: var(--on-surface);
+        }
+        
+        .nav-item i {
+            font-size: 20px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: var(--space-xl);
+            overflow-x: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-xl);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+        
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--on-surface);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-short);
+        }
+        
+        .theme-toggle:hover {
+            background-color: var(--surface-2);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--on-surface);
+            font-weight: 600;
+        }
+        
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--surface-1);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            padding: var(--space-sm) 0;
+            min-width: 200px;
+            z-index: 100;
+            display: none;
+        }
+        
+        .user-profile:hover .user-dropdown {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: var(--space-sm) var(--space-md);
+            cursor: pointer;
+            transition: all var(--transition-short);
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--surface-2);
+        }
+        
+        /* Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .stat-card {
+            background-color: var(--surface-1);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            transition: transform var(--transition-short);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 600;
+            margin: var(--space-sm) 0;
+        }
+        
+        .stat-card .label {
+            color: var(--on-surface-medium);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .stat-card .change {
+            color: var(--on-surface-medium);
+            font-size: 14px;
+        }
+        
+        .stat-card.sales {
+            border-left: 4px solid var(--primary);
+        }
+        
+        .stat-card.orders {
+            border-left: 4px solid var(--success);
+        }
+        
+        .stat-card.products {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .stat-card.users {
+            border-left: 4px solid var(--secondary);
+        }
+        
+        /* Charts */
+        .chart-container {
+            background-color: var(--surface-1);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-xl);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            height: 300px;
+        }
+        
+        .chart-title {
+            margin-bottom: var(--space-md);
+            font-weight: 500;
+        }
+        
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: var(--space-xl);
+            box-shadow: var(--shadow-sm);
+            background-color: var(--surface-1);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        
+        .data-table th {
+            text-align: left;
+            padding: var(--space-md);
+            background-color: var(--surface-2);
+            color: var(--on-surface);
+            font-weight: 500;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .data-table th.sort-asc::after {
+            content: ' ↑';
+            font-size: 12px;
+        }
+        
+        .data-table th.sort-desc::after {
+            content: ' ↓';
+            font-size: 12px;
+        }
+        
+        .data-table td {
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--surface-3);
+        }
+        
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status.pending {
+            background-color: rgba(243, 156, 18, 0.1);
+            color: var(--warning);
+        }
+        
+        .status.completed {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--success);
+        }
+        
+        .status.shipped {
+            background-color: rgba(240, 232, 0, 0.1);
+            color: var(--primary);
+        }
+        
+        .status.active {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--success);
+        }
+        
+        .status.new {
+            background-color: rgba(30, 136, 229, 0.1);
+            color: var(--primary);
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            padding: var(--space-xs);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-short);
+        }
+        
+        .action-btn:hover {
+            background-color: rgba(240, 232, 0, 0.1);
+        }
+        
+        /* Product Editor */
+        .product-editor {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .product-card {
+            background-color: var(--surface-1);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: all var(--transition-medium);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .product-image-container {
+            position: relative;
+            padding-top: 100%;
+            overflow: hidden;
+        }
+        
+        .product-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: var(--space-md);
+        }
+        
+        .product-name {
+            font-weight: 500;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .price-input {
+            width: 100%;
+            padding: var(--space-sm);
+            background-color: var(--surface-2);
+            border: 1px solid var(--surface-3);
+            border-radius: var(--radius-sm);
+            color: var(--on-surface);
+            margin-top: var(--space-sm);
+            transition: all var(--transition-short);
+        }
+        
+        .price-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(240, 232, 0, 0.2);
+        }
+        
+        .save-btn {
+            background-color: var(--primary);
+            color: var(--on-surface);
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: var(--space-sm) var(--space-md);
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: var(--space-md);
+            width: 100%;
+            transition: all var(--transition-short);
+        }
+        
+        .save-btn:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--surface-3);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .tab {
+            padding: var(--space-sm) var(--space-md);
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Users Table */
+        .user-row {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .user-avatar-small {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--on-surface);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        /* Settings */
+        .settings-section {
+            background-color: var(--surface-1);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-md);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .settings-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: var(--space-md);
+        }
+        
+        .settings-group {
+            margin-bottom: var(--space-lg);
+        }
+        
+        .settings-label {
+            display: block;
+            margin-bottom: var(--space-sm);
+            font-weight: 500;
+        }
+        
+        .settings-input {
+            width: 100%;
+            padding: var(--space-sm);
+            background-color: var(--surface-2);
+            border: 1px solid var(--surface-3);
+            border-radius: var(--radius-sm);
+            color: var(--on-surface);
+            margin-bottom: var(--space-md);
+        }
+        
+        .settings-btn {
+            background-color: var(--primary);
+            color: var(--on-surface);
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: var(--space-sm) var(--space-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-short);
+        }
+        
+        .settings-btn:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+        
+        .filter-label {
+            font-size: 14px;
+            color: var(--on-surface-medium);
+        }
+        
+        .filter-input {
+            padding: var(--space-sm);
+            border: 1px solid var(--surface-3);
+            border-radius: var(--radius-sm);
+            background-color: var(--surface-2);
+            color: var(--on-surface);
+        }
+        
+        .export-btn {
+            background-color: var(--success);
+            color: var(--on-surface);
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: var(--space-sm) var(--space-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-short);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-left: auto;
+        }
+        
+        .export-btn:hover {
+            background-color: var(--success-dark);
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--success);
+            color: white;
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all var(--transition-medium);
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                height: auto;
+                position: static;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .auth-container {
+                padding: var(--space-lg);
+                margin: var(--space-md);
+            }
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-container">
+            <h2 class="auth-title" id="authTitle">Login</h2>
+            <form class="auth-form" id="authForm">
+                <div id="nameField" style="display: none;">
+                    <input type="text" class="auth-input" id="nameInput" placeholder="Full Name" required>
+                </div>
+                <input type="email" class="auth-input" id="emailInput" placeholder="Email" required>
+                <input type="password" class="auth-input" id="passwordInput" placeholder="Password" required>
+                <div id="confirmPasswordField" style="display: none;">
+                    <input type="password" class="auth-input" id="confirmPasswordInput" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit" class="auth-btn" id="authSubmit">Login</button>
+                <div class="auth-error" id="authError"></div>
+            </form>
+            <button class="auth-toggle" id="authToggle">Don't have an account? Sign up</button>
+        </div>
+    </div>
+
+    <div class="dashboard" id="dashboard" style="display: none;">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <span class="material-icons-round logo-icon">dashboard</span>
+                <span>E-Habesha Admin</span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item active" data-tab="dashboard">
+                    <i class="material-icons-round">dashboard</i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="nav-item" data-tab="products">
+                    <i class="material-icons-round">inventory_2</i>
+                    <span>Products</span>
+                </li>
+                <li class="nav-item" data-tab="orders">
+                    <i class="material-icons-round">shopping_cart</i>
+                    <span>Orders</span>
+                </li>
+                <li class="nav-item" data-tab="users">
+                    <i class="material-icons-round">people</i>
+                    <span>Users</span>
+                </li>
+                <li class="nav-item" data-tab="analytics">
+                    <i class="material-icons-round">analytics</i>
+                    <span>Analytics</span>
+                </li>
+                <li class="nav-item" data-tab="settings">
+                    <i class="material-icons-round">settings</i>
+                    <span>Settings</span>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1 class="page-title">Dashboard</h1>
+                <div class="header-actions">
+                    <button class="theme-toggle" id="themeToggle">
+                        <span class="material-icons-round" id="themeIcon">dark_mode</span>
+                        <span id="themeText">Dark Mode</span>
+                    </button>
+                    <div class="user-profile">
+                        <div class="user-avatar" id="userAvatar">A</div>
+                        <span id="userName">Admin User</span>
+                        <div class="user-dropdown">
+                            <div class="dropdown-item" id="logoutBtn">
+                                <i class="material-icons-round" style="font-size: 18px;">logout</i>
+                                <span>Logout</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Tab -->
+            <div class="tab-content active" id="dashboard-tab">
+                <div class="stats-grid">
+                    <div class="stat-card sales">
+                        <div class="label">
+                            <span class="material-icons-round">trending_up</span>
+                            <span>Total Sales</span>
+                        </div>
+                        <div class="value" id="totalSales">ብር24,890</div>
+                        <div class="change">+12% from last month</div>
+                    </div>
+                    <div class="stat-card orders">
+                        <div class="label">
+                            <span class="material-icons-round">receipt</span>
+                            <span>Total Orders</span>
+                        </div>
+                        <div class="value" id="totalOrders">156</div>
+                        <div class="change">+8% from last month</div>
+                    </div>
+                    <div class="stat-card products">
+                        <div class="label">
+                            <span class="material-icons-round">inventory</span>
+                            <span>Total Products</span>
+                        </div>
+                        <div class="value" id="totalProducts">42</div>
+                        <div class="change">3 new this month</div>
+                    </div>
+                    <div class="stat-card users">
+                        <div class="label">
+                            <span class="material-icons-round">people</span>
+                            <span>Total Users</span>
+                        </div>
+                        <div class="value" id="totalUsers">89</div>
+                        <div class="change">+5% from last month</div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h2 class="chart-title">Sales Overview</h2>
+                    <canvas id="salesChart"></canvas>
+                </div>
+                
+                <h2>Recent Orders</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentOrdersTable">
+                        <!-- Recent orders will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Products Tab -->
+            <div class="tab-content" id="products-tab">
+                <div class="filters">
+                    <div class="filter-group">
+                        <label class="filter-label">Search</label>
+                        <input type="text" class="filter-input" id="productSearch" placeholder="Search products...">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Sort By</label>
+                        <select class="filter-input" id="productSort">
+                            <option value="name-asc">Name (A-Z)</option>
+                            <option value="name-desc">Name (Z-A)</option>
+                            <option value="price-asc">Price (Low to High)</option>
+                            <option value="price-desc">Price (High to Low)</option>
+                        </select>
+                    </div>
+                    <button class="export-btn" id="exportProducts">
+                        <i class="material-icons-round">download</i>
+                        <span>Export Products</span>
+                    </button>
+                </div>
+                
+                <div class="product-editor" id="productEditor">
+                    <!-- Products will be loaded here -->
+                </div>
+                <button class="save-btn" id="saveAllPrices">
+                    Save All Prices
+                </button>
+            </div>
+            
+            <!-- Orders Tab -->
+            <div class="tab-content" id="orders-tab">
+                <div class="tabs">
+                    <div class="tab active" data-order-tab="all">All Orders</div>
+                    <div class="tab" data-order-tab="pending">Pending</div>
+                    <div class="tab" data-order-tab="shipped">Shipped</div>
+                    <div class="tab" data-order-tab="completed">Completed</div>
+                </div>
+                
+                <div class="filters">
+                    <div class="filter-group">
+                        <label class="filter-label">From Date</label>
+                        <input type="date" class="filter-input" id="fromDate">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">To Date</label>
+                        <input type="date" class="filter-input" id="toDate">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Min Amount</label>
+                        <input type="number" class="filter-input" id="minAmount" placeholder="Min amount">
+                    </div>
+                    <button class="export-btn" id="exportOrders">
+                        <i class="material-icons-round">download</i>
+                        <span>Export Orders</span>
+                    </button>
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="id">Order ID</th>
+                            <th data-sort="customer">Customer</th>
+                            <th data-sort="date">Date</th>
+                            <th data-sort="items">Items</th>
+                            <th data-sort="amount">Amount</th>
+                            <th data-sort="status">Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTable">
+                        <!-- Orders will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Users Tab -->
+            <div class="tab-content" id="users-tab">
+                <div class="tabs">
+                    <div class="tab active" data-user-tab="all">All Users</div>
+                    <div class="tab" data-user-tab="active">Active</div>
+                    <div class="tab" data-user-tab="new">New This Week</div>
+                </div>
+                
+                <div class="filters">
+                    <div class="filter-group">
+                        <label class="filter-label">Search</label>
+                        <input type="text" class="filter-input" id="userSearch" placeholder="Search users...">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Gender</label>
+                        <select class="filter-input" id="userGender">
+                            <option value="">All</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <button class="export-btn" id="exportUsers">
+                        <i class="material-icons-round">download</i>
+                        <span>Export Users</span>
+                    </button>
+                </div>
+                
+                <div class="stats-grid" style="margin-bottom: var(--space-xl);">
+                    <div class="stat-card" style="border-left: 4px solid var(--primary);">
+                        <div class="label">
+                            <span class="material-icons-round">person</span>
+                            <span>Total Users</span>
+                        </div>
+                        <div class="value" id="totalUsersCard">89</div>
+                        <div class="change">+5% from last month</div>
+                    </div>
+                    <div class="stat-card" style="border-left: 4px solid var(--secondary);">
+                        <div class="label">
+                            <span class="material-icons-round">female</span>
+                            <span>Female Users</span>
+                        </div>
+                        <div class="value" id="femaleUsers">49 (55%)</div>
+                        <div class="change">+3% from last month</div>
+                    </div>
+                    <div class="stat-card" style="border-left: 4px solid var(--primary);">
+                        <div class="label">
+                            <span class="material-icons-round">male</span>
+                            <span>Male Users</span>
+                        </div>
+                        <div class="value" id="maleUsers">40 (45%)</div>
+                        <div class="change">+2% from last month</div>
+                    </div>
+                    <div class="stat-card" style="border-left: 4px solid var(--success);">
+                        <div class="label">
+                            <span class="material-icons-round">verified_user</span>
+                            <span>Active Users</span>
+                        </div>
+                        <div class="value" id="activeUsers">72 (81%)</div>
+                        <div class="change">+8% from last month</div>
+                    </div>
+                </div>
+                
+                <div class="chart-container" style="height: 250px; margin-bottom: var(--space-xl);">
+                    <h2 class="chart-title">User Demographics</h2>
+                    <canvas id="userDemographicsChart"></canvas>
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="name">User</th>
+                            <th data-sort="email">Email</th>
+                            <th data-sort="gender">Gender</th>
+                            <th data-sort="joined">Joined</th>
+                            <th data-sort="lastActive">Last Active</th>
+                            <th data-sort="orders">Orders</th>
+                            <th data-sort="status">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTable">
+                        <!-- Users will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Analytics Tab -->
+            <div class="tab-content" id="analytics-tab">
+                <div class="stats-grid">
+                    <div class="stat-card sales">
+                        <div class="label">
+                            <span class="material-icons-round">trending_up</span>
+                            <span>Total Revenue</span>
+                        </div>
+                        <div class="value">ብር24,890</div>
+                        <div class="change">+12% from last month</div>
+                    </div>
+                    <div class="stat-card orders">
+                        <div class="label">
+                            <span class="material-icons-round">receipt</span>
+                            <span>Total Orders</span>
+                        </div>
+                        <div class="value">156</div>
+                        <div class="change">+8% from last month</div>
+                    </div>
+                    <div class="stat-card products">
+                        <div class="label">
+                            <span class="material-icons-round">inventory</span>
+                            <span>Products Sold</span>
+                        </div>
+                        <div class="value">342</div>
+                        <div class="change">+15% from last month</div>
+                    </div>
+                    <div class="stat-card users">
+                        <div class="label">
+                            <span class="material-icons-round">people</span>
+                            <span>New Customers</span>
+                        </div>
+                        <div class="value">28</div>
+                        <div class="change">+5% from last month</div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h2 class="chart-title">Revenue Last 12 Months</h2>
+                    <canvas id="revenueChart"></canvas>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); margin-bottom: var(--space-xl);">
+                    <div class="chart-container">
+                        <h2 class="chart-title">Top Products</h2>
+                        <canvas id="topProductsChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h2 class="chart-title">Customer Acquisition</h2>
+                        <canvas id="customerAcquisitionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settings-tab">
+                <div class="settings-section">
+                    <h2 class="settings-title">General Settings</h2>
+                    <div class="settings-group">
+                        <label class="settings-label">Store Name</label>
+                        <input type="text" class="settings-input" id="storeName" value="E-Habesha Store">
+                        
+                        <label class="settings-label">Store Currency</label>
+                        <input type="text" class="settings-input" id="storeCurrency" value="Ethiopian Birr (ብር)">
+                        
+                        <label class="settings-label">Timezone</label>
+                        <select class="settings-input" id="timezone">
+                            <option>Africa/Addis_Ababa (EAT)</option>
+                            <option>UTC</option>
+                        </select>
+                    </div>
+                    <button class="settings-btn" id="saveGeneralSettings">Save General Settings</button>
+                </div>
+                
+                <div class="settings-section">
+                    <h2 class="settings-title">Appearance</h2>
+                    <div class="settings-group">
+                        <label class="settings-label">Theme</label>
+                        <select class="settings-input" id="themeSelect">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="system">System Default</option>
+                        </select>
+                        
+                        <label class="settings-label">Primary Color</label>
+                        <input type="color" class="settings-input" id="primaryColor" value="#1a5c40">
+                    </div>
+                    <button class="settings-btn" id="saveAppearanceSettings">Save Appearance Settings</button>
+                </div>
+                
+                <div class="settings-section">
+                    <h2 class="settings-title">Notifications</h2>
+                    <div class="settings-group">
+                        <label class="settings-label">
+                            <input type="checkbox" id="emailNotifications" checked> Email Notifications
+                        </label>
+                        
+                        <label class="settings-label">
+                            <input type="checkbox" id="pushNotifications" checked> Push Notifications
+                        </label>
+                        
+                        <label class="settings-label">Notification Sound</label>
+                        <select class="settings-input" id="notificationSound">
+                            <option>Default</option>
+                            <option>Chime</option>
+                            <option>Bell</option>
+                            <option>None</option>
+                        </select>
+                    </div>
+                    <button class="settings-btn" id="saveNotificationSettings">Save Notification Settings</button>
+                </div>
+                
+                <div class="settings-section">
+                    <h2 class="settings-title">Data Management</h2>
+                    <div class="settings-group">
+                        <label class="settings-label">Export All Data</label>
+                        <button class="settings-btn" id="exportAllData" style="width: 100%;">
+                            <i class="material-icons-round">download</i>
+                            Export Data
+                        </button>
+                        
+                        <label class="settings-label">Import Data</label>
+                        <input type="file" class="settings-input" id="importData" accept=".json">
+                        <button class="settings-btn" id="importDataBtn" style="width: 100%;">
+                            <i class="material-icons-round">upload</i>
+                            Import Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span class="material-icons-round">check_circle</span>
+        <span id="toastMessage">Settings saved successfully!</span>
+    </div>
+
+    <script>
+        // Firebase configuration - replace with your actual config
+const firebaseConfig = {
+  apiKey: "AIzaSyDE2IfmTrcyrK5MRisNSoZkT3VMVtUf43k",
+  authDomain: "e-habesha.firebaseapp.com",
+  projectId: "e-habesha",
+  storageBucket: "e-habesha.firebasestorage.app",
+  messagingSenderId: "269078368948",
+  appId: "1:269078368948:web:41bb7708332d72cc2ebde1",
+  measurementId: "G-NQEC8EPTT6"
+};
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // DOM Elements
+        const authModal = document.getElementById('authModal');
+        const authTitle = document.getElementById('authTitle');
+        const authForm = document.getElementById('authForm');
+        const authSubmit = document.getElementById('authSubmit');
+        const authToggle = document.getElementById('authToggle');
+        const authError = document.getElementById('authError');
+        const nameField = document.getElementById('nameField');
+        const nameInput = document.getElementById('nameInput');
+        const emailInput = document.getElementById('emailInput');
+        const passwordInput = document.getElementById('passwordInput');
+        const confirmPasswordField = document.getElementById('confirmPasswordField');
+        const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+        const dashboard = document.getElementById('dashboard');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        const productEditor = document.getElementById('productEditor');
+        const ordersTable = document.getElementById('ordersTable');
+        const usersTable = document.getElementById('usersTable');
+        const recentOrdersTable = document.getElementById('recentOrdersTable');
+        const saveAllPricesBtn = document.getElementById('saveAllPrices');
+        const navItems = document.querySelectorAll('.nav-item');
+        const orderTabs = document.querySelectorAll('[data-order-tab]');
+        const userTabs = document.querySelectorAll('[data-user-tab]');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const themeSelect = document.getElementById('themeSelect');
+        const primaryColor = document.getElementById('primaryColor');
+        const storeName = document.getElementById('storeName');
+        const storeCurrency = document.getElementById('storeCurrency');
+        const timezone = document.getElementById('timezone');
+        const emailNotifications = document.getElementById('emailNotifications');
+        const pushNotifications = document.getElementById('pushNotifications');
+        const notificationSound = document.getElementById('notificationSound');
+        const saveGeneralSettings = document.getElementById('saveGeneralSettings');
+        const saveAppearanceSettings = document.getElementById('saveAppearanceSettings');
+        const saveNotificationSettings = document.getElementById('saveNotificationSettings');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        const body = document.body;
+        
+        // Filter and export elements
+        const productSearch = document.getElementById('productSearch');
+        const productSort = document.getElementById('productSort');
+        const exportProducts = document.getElementById('exportProducts');
+        const fromDate = document.getElementById('fromDate');
+        const toDate = document.getElementById('toDate');
+        const minAmount = document.getElementById('minAmount');
+        const exportOrders = document.getElementById('exportOrders');
+        const userSearch = document.getElementById('userSearch');
+        const userGender = document.getElementById('userGender');
+        const exportUsers = document.getElementById('exportUsers');
+        const exportAllData = document.getElementById('exportAllData');
+        const importData = document.getElementById('importData');
+        const importDataBtn = document.getElementById('importDataBtn');
+        
+        // Table sorting
+        const sortableHeaders = document.querySelectorAll('[data-sort]');
+        
+        // State variables
+        let isLogin = true;
+        let currentUser = null;
+        let products = [];
+        let orders = [];
+        let users = [];
+        let currentSort = { field: null, direction: 'asc' };
+
+        // Initialize the application
+        function initApp() {
+            // Check auth state
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    // User is signed in
+                    currentUser = user;
+                    showDashboard();
+                    loadData();
+                    
+                    // Set user info
+                    const displayName = user.displayName || 'Admin User';
+                    const initials = displayName.split(' ').map(n => n[0]).join('').substring(0, 2);
+                    userName.textContent = displayName;
+                    userAvatar.textContent = initials;
+                } else {
+                    // No user is signed in
+                    showAuthModal();
+                }
+            });
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Load settings
+            loadSettings();
+        }
+
+        // Show auth modal
+        function showAuthModal() {
+            authModal.classList.add('show');
+            dashboard.style.display = 'none';
+            resetAuthForm();
+        }
+
+        // Show dashboard
+        function showDashboard() {
+            authModal.classList.remove('show');
+            dashboard.style.display = 'grid';
+        }
+
+        // Reset auth form
+        function resetAuthForm() {
+            authForm.reset();
+            authError.textContent = '';
+            isLogin = true;
+            authTitle.textContent = 'Login';
+            authSubmit.textContent = 'Login';
+            authToggle.textContent = "Don't have an account? Sign up";
+            nameField.style.display = 'none';
+            confirmPasswordField.style.display = 'none';
+        }
+
+        // Toggle between login and signup
+        function toggleAuthMode() {
+            isLogin = !isLogin;
+            
+            if (isLogin) {
+                authTitle.textContent = 'Login';
+                authSubmit.textContent = 'Login';
+                authToggle.textContent = "Don't have an account? Sign up";
+                nameField.style.display = 'none';
+                confirmPasswordField.style.display = 'none';
+            } else {
+                authTitle.textContent = 'Sign Up';
+                authSubmit.textContent = 'Sign Up';
+                authToggle.textContent = "Already have an account? Login";
+                nameField.style.display = 'block';
+                confirmPasswordField.style.display = 'block';
+            }
+            
+            authError.textContent = '';
+        }
+
+        // Handle auth form submission
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+            authError.textContent = '';
+            
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            
+            try {
+                if (isLogin) {
+                    // Login
+                    await auth.signInWithEmailAndPassword(email, password);
+                } else {
+                    // Sign up
+                    if (password !== confirmPasswordInput.value) {
+                        throw new Error('Passwords do not match');
+                    }
+                    
+                    const name = nameInput.value;
+                    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                    await userCredential.user.updateProfile({
+                        displayName: name
+                    });
+                    
+                    // Create user document in Firestore
+                    await db.collection('users').doc(userCredential.user.uid).set({
+                        name: name,
+                        email: email,
+                        role: 'admin',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+            } catch (error) {
+                authError.textContent = error.message;
+                console.error('Auth error:', error);
+            }
+        }
+
+        // Logout
+        function handleLogout() {
+            auth.signOut().then(() => {
+                showAuthModal();
+            }).catch(error => {
+                console.error('Logout error:', error);
+                showToast('Error logging out');
+            });
+        }
+
+        // Load data from Firestore
+        async function loadData() {
+            try {
+                // Load products
+                const productsSnapshot = await db.collection('products').get();
+                products = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                // Load orders
+                const ordersSnapshot = await db.collection('orders').orderBy('date', 'desc').limit(50).get();
+                orders = ordersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                // Load users
+                const usersSnapshot = await db.collection('users').get();
+                users = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                // Update UI
+                updateStats();
+                loadProducts();
+                loadOrders();
+                loadUsers();
+                loadRecentOrders();
+                initCharts();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showToast('Error loading data');
+            }
+        }
+
+        // Update stats cards
+        function updateStats() {
+            document.getElementById('totalSales').textContent = `ብር${orders.reduce((sum, order) => sum + (order.amount || 0), 0).toFixed(2)}`;
+            document.getElementById('totalOrders').textContent = orders.length;
+            document.getElementById('totalProducts').textContent = products.length;
+            document.getElementById('totalUsers').textContent = users.length;
+            
+            // Users tab stats
+            const femaleUsers = users.filter(u => u.gender === 'female').length;
+            const maleUsers = users.filter(u => u.gender === 'male').length;
+            const activeUsers = users.filter(u => u.status === 'active').length;
+            
+            document.getElementById('totalUsersCard').textContent = users.length;
+            document.getElementById('femaleUsers').textContent = `${femaleUsers} (${Math.round(femaleUsers / users.length * 100)}%)`;
+            document.getElementById('maleUsers').textContent = `${maleUsers} (${Math.round(maleUsers / users.length * 100)}%)`;
+            document.getElementById('activeUsers').textContent = `${activeUsers} (${Math.round(activeUsers / users.length * 100)}%)`;
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Theme toggle
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                themeIcon.textContent = 'light_mode';
+                themeText.textContent = 'Light Mode';
+                localStorage.setItem('habeshaTheme', 'dark');
+                themeSelect.value = 'dark';
+                
+                // Update settings
+                const settings = JSON.parse(localStorage.getItem('habeshaSettings')) || {};
+                settings.theme = 'dark';
+                localStorage.setItem('habeshaSettings', JSON.stringify(settings));
+            } else {
+                themeIcon.textContent = 'dark_mode';
+                themeText.textContent = 'Dark Mode';
+                localStorage.setItem('habeshaTheme', 'light');
+                themeSelect.value = 'light';
+                
+                // Update settings
+                const settings = JSON.parse(localStorage.getItem('habeshaSettings')) || {};
+                settings.theme = 'light';
+                localStorage.setItem('habeshaSettings', JSON.stringify(settings));
+            }
+        });
+
+        // Theme select change
+        themeSelect.addEventListener('change', (e) => {
+            const settings = JSON.parse(localStorage.getItem('habeshaSettings')) || {};
+            
+            if (e.target.value === 'dark') {
+                body.classList.add('dark-mode');
+                themeIcon.textContent = 'light_mode';
+                themeText.textContent = 'Light Mode';
+                settings.theme = 'dark';
+            } else if (e.target.value === 'light') {
+                body.classList.remove('dark-mode');
+                themeIcon.textContent = 'dark_mode';
+                themeText.textContent = 'Dark Mode';
+                settings.theme = 'light';
+            } else {
+                // System default
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    body.classList.add('dark-mode');
+                    themeIcon.textContent = 'light_mode';
+                    themeText.textContent = 'Light Mode';
+                } else {
+                    body.classList.remove('dark-mode');
+                    themeIcon.textContent = 'dark_mode';
+                    themeText.textContent = 'Dark Mode';
+                }
+                settings.theme = 'system';
+            }
+            
+            localStorage.setItem('habeshaSettings', JSON.stringify(settings));
+            showToast('Appearance settings updated');
+        });
+
+        // Save general settings
+        saveGeneralSettings.addEventListener('click', () => {
+            const settings = JSON.parse(localStorage.getItem('habeshaSettings')) || {};
+            settings.storeName = storeName.value;
+            settings.storeCurrency = storeCurrency.value;
+            settings.timezone = timezone.value;
+            
+            localStorage.setItem('habeshaSettings', JSON.stringify(settings));
+            showToast('General settings saved');
+        });
+
+        // Save appearance settings
+        saveAppearanceSettings.addEventListener('click', () => {
+            const settings = JSON.parse(localStorage.getItem('habeshaSettings')) || {};
+            settings.primaryColor = primaryColor.value;
+            
+            localStorage.setItem('habeshaSettings', JSON.stringify(settings));
+            showToast('Appearance settings saved');
+        });
+
+        // Save notification settings
+        saveNotificationSettings.addEventListener('click', () => {
+            const settings = JSON.parse(localStorage.getItem('habeshaSettings')) || {};
+            settings.emailNotifications = emailNotifications.checked;
+            settings.pushNotifications = pushNotifications.checked;
+            settings.notificationSound = notificationSound.value;
+            
+            localStorage.setItem('habeshaSettings', JSON.stringify(settings));
+            showToast('Notification settings saved');
+        });
+
+        // Initialize charts
+        function initCharts() {
+            // Sales Chart
+            const salesCtx = document.getElementById('salesChart').getContext('2d');
+            new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Sales',
+                        data: [12000, 19000, 15000, 18000, 22000, 24890, 20000],
+                        backgroundColor: 'rgba(26, 92, 64, 0.1)',
+                        borderColor: 'rgba(26, 92, 64, 1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // User Demographics Chart
+            const userDemographicsCtx = document.getElementById('userDemographicsChart').getContext('2d');
+            new Chart(userDemographicsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Female', 'Male'],
+                    datasets: [{
+                        data: [
+                            users.filter(u => u.gender === 'female').length,
+                            users.filter(u => u.gender === 'male').length
+                        ],
+                        backgroundColor: [
+                            'rgba(230, 57, 70, 0.8)',
+                            'rgba(26, 92, 64, 0.8)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revenueCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [15000, 18000, 16000, 19000, 21000, 23000, 22000, 20000, 22000, 24000, 25000, 24890],
+                        backgroundColor: 'rgba(26, 92, 64, 0.8)',
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Top Products Chart
+            const topProductsCtx = document.getElementById('topProductsChart').getContext('2d');
+            new Chart(topProductsCtx, {
+                type: 'horizontalBar',
+                data: {
+                    labels: ['Habesha Kemis', 'Coffee Beans', 'Spices Set', 'Injera', 'Handwoven Basket'],
+                    datasets: [{
+                        label: 'Sales',
+                        data: [120, 95, 80, 65, 50],
+                        backgroundColor: [
+                            'rgba(26, 92, 64, 0.8)',
+                            'rgba(46, 204, 113, 0.8)',
+                            'rgba(240, 232, 0, 0.8)',
+                            'rgba(230, 57, 70, 0.8)',
+                            'rgba(243, 156, 18, 0.8)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Customer Acquisition Chart
+            const customerAcquisitionCtx = document.getElementById('customerAcquisitionChart').getContext('2d');
+            new Chart(customerAcquisitionCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Social Media', 'Search Engines', 'Direct Traffic', 'Referrals', 'Email'],
+                    datasets: [{
+                        data: [35, 25, 20, 15, 5],
+                        backgroundColor: [
+                            'rgba(26, 92, 64, 0.8)',
+                            'rgba(46, 204, 113, 0.8)',
+                            'rgba(240, 232, 0, 0.8)',
+                            'rgba(230, 57, 70, 0.8)',
+                            'rgba(243, 156, 18, 0.8)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Load products into editor
+        function loadProducts() {
+            productEditor.innerHTML = '';
+            
+            // Apply search filter
+            const searchTerm = productSearch.value.toLowerCase();
+            let filteredProducts = products.filter(product => 
+                product.name.toLowerCase().includes(searchTerm)
+            );
+            
+            // Apply sorting
+            const sortValue = productSort.value;
+            filteredProducts.sort((a, b) => {
+                if (sortValue === 'name-asc') return a.name.localeCompare(b.name);
+                if (sortValue === 'name-desc') return b.name.localeCompare(a.name);
+                if (sortValue === 'price-asc') return (a.price || 0) - (b.price || 0);
+                if (sortValue === 'price-desc') return (b.price || 0) - (a.price || 0);
+                return 0;
+            });
+            
+            filteredProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-image-container">
+                        <img src="${product.image || 'https://via.placeholder.com/300'}" alt="${product.name}" class="product-image" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div>Current Price: ብር${(product.price || 0).toFixed(2)}</div>
+                        <input type="number" class="price-input" 
+                               value="${(product.price || 0).toFixed(2)}" 
+                               step="0.01" 
+                               min="0"
+                               data-product-id="${product.id}"
+                               placeholder="Enter new price">
+                    </div>
+                `;
+                
+                productEditor.appendChild(productCard);
+            });
+        }
+
+        // Load orders
+        function loadOrders(filter = 'all') {
+            ordersTable.innerHTML = '';
+            
+            // Apply filters
+            let filteredOrders = filter === 'all' ? orders : orders.filter(order => order.status === filter);
+            
+            // Date filter
+            if (fromDate.value) {
+                const fromDateObj = new Date(fromDate.value);
+                filteredOrders = filteredOrders.filter(order => {
+                    const orderDate = order.date ? new Date(order.date.seconds * 1000) : new Date();
+                    return orderDate >= fromDateObj;
+                });
+            }
+            
+            if (toDate.value) {
+                const toDateObj = new Date(toDate.value);
+                filteredOrders = filteredOrders.filter(order => {
+                    const orderDate = order.date ? new Date(order.date.seconds * 1000) : new Date();
+                    return orderDate <= toDateObj;
+                });
+            }
+            
+            // Amount filter
+            if (minAmount.value) {
+                filteredOrders = filteredOrders.filter(order => order.amount >= parseFloat(minAmount.value));
+            }
+            
+            // Apply sorting
+            if (currentSort.field) {
+                filteredOrders.sort((a, b) => {
+                    const aValue = a[currentSort.field];
+                    const bValue = b[currentSort.field];
+                    
+                    if (typeof aValue === 'string' && typeof bValue === 'string') {
+                        return currentSort.direction === 'asc' 
+                            ? aValue.localeCompare(bValue) 
+                            : bValue.localeCompare(aValue);
+                    } else {
+                        return currentSort.direction === 'asc' 
+                            ? (aValue || 0) - (bValue || 0) 
+                            : (bValue || 0) - (aValue || 0);
+                    }
+                });
+            }
+            
+            filteredOrders.forEach(order => {
+                const orderDate = order.date ? new Date(order.date.seconds * 1000).toLocaleDateString() : 'N/A';
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.customer || 'N/A'}</td>
+                    <td>${orderDate}</td>
+                    <td>${order.items || 0}</td>
+                    <td>ብር${(order.amount || 0).toFixed(2)}</td>
+                    <td><span class="status ${order.status || 'pending'}">${(order.status || 'pending').charAt(0).toUpperCase() + (order.status || 'pending').slice(1)}</span></td>
+                    <td>
+                        <button class="action-btn">
+                            <span class="material-icons-round">visibility</span>
+                        </button>
+                    </td>
+                `;
+                ordersTable.appendChild(row);
+            });
+        }
+
+        // Load recent orders (for dashboard)
+        function loadRecentOrders() {
+            recentOrdersTable.innerHTML = '';
+            
+            const recentOrders = orders.slice(0, 5); // Get first 5 orders
+            
+            recentOrders.forEach(order => {
+                const orderDate = order.date ? new Date(order.date.seconds * 1000).toLocaleDateString() : 'N/A';
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.customer || 'N/A'}</td>
+                    <td>${orderDate}</td>
+                    <td>ብር${(order.amount || 0).toFixed(2)}</td>
+                    <td><span class="status ${order.status || 'pending'}">${(order.status || 'pending').charAt(0).toUpperCase() + (order.status || 'pending').slice(1)}</span></td>
+                    <td>
+                        <button class="action-btn">
+                            <span class="material-icons-round">visibility</span>
+                        </button>
+                    </td>
+                `;
+                recentOrdersTable.appendChild(row);
+            });
+        }
+
+        // Load users
+        function loadUsers(filter = 'all') {
+            usersTable.innerHTML = '';
+            
+            // Apply filters
+            let filteredUsers = filter === 'all' ? users : 
+                              filter === 'active' ? users.filter(user => user.status === 'active') :
+                              users.filter(user => user.status === 'new');
+            
+            // Search filter
+            const searchTerm = userSearch.value.toLowerCase();
+            if (searchTerm) {
+                filteredUsers = filteredUsers.filter(user => 
+                    user.name.toLowerCase().includes(searchTerm) || 
+                    user.email.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Gender filter
+            if (userGender.value) {
+                filteredUsers = filteredUsers.filter(user => user.gender === userGender.value);
+            }
+            
+            // Apply sorting
+            if (currentSort.field) {
+                filteredUsers.sort((a, b) => {
+                    const aValue = a[currentSort.field];
+                    const bValue = b[currentSort.field];
+                    
+                    if (typeof aValue === 'string' && typeof bValue === 'string') {
+                        return currentSort.direction === 'asc' 
+                            ? aValue.localeCompare(bValue) 
+                            : bValue.localeCompare(aValue);
+                    } else {
+                        return currentSort.direction === 'asc' 
+                            ? (aValue || 0) - (bValue || 0) 
+                            : (bValue || 0) - (aValue || 0);
+                    }
+                });
+            }
+            
+            filteredUsers.forEach(user => {
+                const initials = user.name ? user.name.split(' ').map(n => n[0]).join('') : 'U';
+                const joinedDate = user.createdAt ? new Date(user.createdAt.seconds * 1000).toLocaleDateString() : 'N/A';
+                const lastActiveDate = user.lastActive ? new Date(user.lastActive.seconds * 1000).toLocaleDateString() : 'N/A';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="user-row">
+                            <div class="user-avatar-small">${initials}</div>
+                            <div>
+                                <div>${user.name || 'Unknown User'}</div>
+                                <div style="font-size: 12px; color: var(--on-surface-medium);">ID: ${user.id}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${user.email || 'N/A'}</td>
+                    <td>${user.gender ? user.gender.charAt(0).toUpperCase() + user.gender.slice(1) : 'N/A'}</td>
+                    <td>${joinedDate}</td>
+                    <td>${lastActiveDate}</td>
+                    <td>${user.orders || 0}</td>
+                    <td><span class="status ${user.status || 'active'}">${(user.status || 'active').charAt(0).toUpperCase() + (user.status || 'active').slice(1)}</span></td>
+                `;
+                usersTable.appendChild(row);
+            });
+        }
+
+        // Save all prices to Firestore
+        saveAllPricesBtn.addEventListener('click', async () => {
+            const priceInputs = document.querySelectorAll('.price-input');
+            const batch = db.batch();
+            
+            priceInputs.forEach(input => {
+                const productId = input.dataset.productId;
+                const newPrice = parseFloat(input.value);
+                
+                if (!isNaN(newPrice)) {
+                    const productRef = db.collection('products').doc(productId);
+                    batch.update(productRef, { price: newPrice });
+                }
+            });
+            
+            try {
+                await batch.commit();
+                showToast('Prices saved successfully!');
+                loadProducts(); // Refresh to show updated prices
+            } catch (error) {
+                console.error('Error saving prices:', error);
+                showToast('Error saving prices');
+            }
+        });
+
+        // Export data functions
+        function exportData(data, fileName) {
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Export products
+        exportProducts.addEventListener('click', () => {
+            exportData(products, 'ehabesha-products.json');
+        });
+
+        // Export orders
+        exportOrders.addEventListener('click', () => {
+            exportData(orders, 'ehabesha-orders.json');
+        });
+
+        // Export users
+        exportUsers.addEventListener('click', () => {
+            exportData(users, 'ehabesha-users.json');
+        });
+
+        // Export all data
+        exportAllData.addEventListener('click', () => {
+            const allData = {
+                products: products,
+                orders: orders,
+                users: users,
+                settings: JSON.parse(localStorage.getItem('habeshaSettings')) || {}
+            };
+            exportData(allData, 'ehabesha-all-data.json');
+        });
+
+        // Import data
+        importDataBtn.addEventListener('click', async () => {
+            const file = importData.files[0];
+            if (!file) {
+                showToast('Please select a file first');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    // Import products
+                    if (data.products) {
+                        const batch = db.batch();
+                        data.products.forEach(product => {
+                            const productRef = db.collection('products').doc(product.id);
+                            batch.set(productRef, product);
+                        });
+                        await batch.commit();
+                    }
+                    
+                    // Import orders
+                    if (data.orders) {
+                        const batch = db.batch();
+                        data.orders.forEach(order => {
+                            const orderRef = db.collection('orders').doc(order.id);
+                            batch.set(orderRef, order);
+                        });
+                        await batch.commit();
+                    }
+                    
+                    // Import users
+                    if (data.users) {
+                        const batch = db.batch();
+                        data.users.forEach(user => {
+                            const userRef = db.collection('users').doc(user.id);
+                            batch.set(userRef, user);
+                        });
+                        await batch.commit();
+                    }
+                    
+                    // Import settings
+                    if (data.settings) {
+                        localStorage.setItem('habeshaSettings', JSON.stringify(data.settings));
+                        loadSettings();
+                    }
+                    
+                    showToast('Data imported successfully!');
+                    loadData(); // Refresh data
+                } catch (error) {
+                    console.error('Error importing data:', error);
+                    showToast('Error importing data');
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        // Tab navigation
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Remove active class from all nav items
+                navItems.forEach(navItem => navItem.classList.remove('active'));
+                
+                // Add active class to clicked item
+                item.classList.add('active');
+                
+                // Hide all tab contents
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Show selected tab content
+                const tabId = item.getAttribute('data-tab');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+                
+                // Load data for the selected tab
+                if (tabId === 'products') {
+                    loadProducts();
+                } else if (tabId === 'orders') {
+                    loadOrders();
+                } else if (tabId === 'users') {
+                    loadUsers();
+                } else if (tabId === 'analytics') {
+                    initCharts(); // Initialize charts when analytics tab is opened
+                }
+            });
+        });
+
+        // Order tabs
+        orderTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all order tabs
+                orderTabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Load orders with filter
+                const filter = tab.getAttribute('data-order-tab');
+                loadOrders(filter);
+            });
+        });
+
+        // User tabs
+        userTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all user tabs
+                userTabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Load users with filter
+                const filter = tab.getAttribute('data-user-tab');
+                loadUsers(filter);
+            });
+        });
+
+        // Table sorting
+        sortableHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const field = header.getAttribute('data-sort');
+                
+                // Remove sort classes from all headers
+                sortableHeaders.forEach(h => {
+                    h.classList.remove('sort-asc', 'sort-desc');
+                });
+                
+                // Toggle sort direction if clicking the same field
+                if (currentSort.field === field) {
+                    currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+                } else {
+                    currentSort.field = field;
+                    currentSort.direction = 'asc';
+                }
+                
+                // Add appropriate class to current header
+                header.classList.add(`sort-${currentSort.direction}`);
+                
+                // Re-load data with new sort
+                const activeTab = document.querySelector('.tab-content.active').id;
+                if (activeTab === 'orders-tab') {
+                    loadOrders(document.querySelector('[data-order-tab].active')?.getAttribute('data-order-tab') || 'all');
+                } else if (activeTab === 'users-tab') {
+                    loadUsers(document.querySelector('[data-user-tab].active')?.getAttribute('data-user-tab') || 'all');
+                }
+            });
+        });
+
+        // Filter event listeners
+        productSearch.addEventListener('input', () => loadProducts());
+        productSort.addEventListener('change', () => loadProducts());
+        
+        fromDate.addEventListener('change', () => loadOrders(document.querySelector('[data-order-tab].active')?.getAttribute('data-order-tab') || 'all'));
+        toDate.addEventListener('change', () => loadOrders(document.querySelector('[data-order-tab].active')?.getAttribute('data-order-tab') || 'all'));
+        minAmount.addEventListener('input', () => loadOrders(document.querySelector('[data-order-tab].active')?.getAttribute('data-order-tab') || 'all'));
+        
+        userSearch.addEventListener('input', () => loadUsers(document.querySelector('[data-user-tab].active')?.getAttribute('data-user-tab') || 'all'));
+        userGender.addEventListener('change', () => loadUsers(document.querySelector('[data-user-tab].active')?.getAttribute('data-user-tab') || 'all'));
+
+        // Load saved settings
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('habeshaSettings')) || {};
+            
+            // Theme settings
+            const savedTheme = settings.theme || 'light';
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                themeIcon.textContent = 'light_mode';
+                themeText.textContent = 'Light Mode';
+                themeSelect.value = 'dark';
+            } else if (savedTheme === 'system') {
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    body.classList.add('dark-mode');
+                    themeIcon.textContent = 'light_mode';
+                    themeText.textContent = 'Light Mode';
+                }
+                themeSelect.value = 'system';
+            }
+            
+            // General settings
+            if (settings.storeName) storeName.value = settings.storeName;
+            if (settings.storeCurrency) storeCurrency.value = settings.storeCurrency;
+            if (settings.timezone) timezone.value = settings.timezone;
+            
+            // Appearance settings
+            if (settings.primaryColor) primaryColor.value = settings.primaryColor;
+            
+            // Notification settings
+            if (settings.emailNotifications !== undefined) emailNotifications.checked = settings.emailNotifications;
+            if (settings.pushNotifications !== undefined) pushNotifications.checked = settings.pushNotifications;
+            if (settings.notificationSound) notificationSound.value = settings.notificationSound;
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Auth events
+            authToggle.addEventListener('click', toggleAuthMode);
+            authForm.addEventListener('submit', handleAuthSubmit);
+            logoutBtn.addEventListener('click', handleLogout);
+            
+            // Theme events
+            themeToggle.addEventListener('click', toggleTheme);
+            themeSelect.addEventListener('change', handleThemeSelect);
+            
+            // Settings events
+            saveGeneralSettings.addEventListener('click', saveGeneralSettings);
+            saveAppearanceSettings.addEventListener('click', saveAppearanceSettings);
+            saveNotificationSettings.addEventListener('click', saveNotificationSettings);
+            
+            // Data management events
+            exportProducts.addEventListener('click', exportProductsData);
+            exportOrders.addEventListener('click', exportOrdersData);
+            exportUsers.addEventListener('click', exportUsersData);
+            exportAllData.addEventListener('click', exportAllData);
+            importDataBtn.addEventListener('click', importData);
+            
+            // Filter events
+            productSearch.addEventListener('input', updateProductFilters);
+            productSort.addEventListener('change', updateProductFilters);
+            fromDate.addEventListener('change', updateOrderFilters);
+            toDate.addEventListener('change', updateOrderFilters);
+            minAmount.addEventListener('input', updateOrderFilters);
+            userSearch.addEventListener('input', updateUserFilters);
+            userGender.addEventListener('change', updateUserFilters);
+            
+            // Tab navigation
+            navItems.forEach(item => {
+                item.addEventListener('click', () => switchTab(item.getAttribute('data-tab')));
+            });
+            
+            // Order tabs
+            orderTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const filter = tab.getAttribute('data-order-tab');
+                    loadOrders(filter);
+                });
+            });
+            
+            // User tabs
+            userTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const filter = tab.getAttribute('data-user-tab');
+                    loadUsers(filter);
+                });
+            });
+            
+            // Table sorting
+            sortableHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const field = header.getAttribute('data-sort');
+                    sortTable(field);
+                });
+            });
+        }
+
+        // Initialize the app
+        initApp();
+    </script>
+</body>
+</html>
