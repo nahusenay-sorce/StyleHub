@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleHub | Size Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="sizeguide.css">
+    <script src="sizeguide.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="#" class="logo">Style<span>Hub</span></a>
+            <ul class="nav-links">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="cart.html">cart</a></li>
+                <li><a href="wishlist.html">Wishlist</a></li>
+                <li><a href="checkout.html">Cheacout</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="FAQ.html">FAQ</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div class="action-icon">
+                    <a href="wishlist.html"><i class="fas fa-heart"></i></a>
+                    <span class="icon-badge" id="wishlistCount">0</span>
+                </div>
+                <div class="action-icon">
+                    <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+                    <span class="icon-badge" id="cartCount">0</span>
+                </div>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Size Guide Section -->
+    <section class="size-guide">
+        <div class="container">
+            <div class="size-guide-header">
+                <h1>Find Your Perfect Fit – Our Size Guide</h1>
+                <p>Our products are designed to help you look and feel your best. Use this guide to find the right size based on your body measurements. For the most accurate fit, measure your body and compare with the chart below.</p>
+            </div>
+            
+            <!-- Category Tabs -->
+            <div class="category-tabs">
+                <button class="tab-btn active" data-category="tops">
+                    <i class="fas fa-tshirt"></i> Men's Tops
+                </button>
+                <button class="tab-btn" data-category="bottoms">
+                    <i class="fas fa-jeans"></i> Men's Bottoms
+                </button>
+                <button class="tab-btn" data-category="footwear">
+                    <i class="fas fa-shoe-prints"></i> Footwear
+                </button>
+                <button class="tab-btn" data-category="jackets">
+                    <i class="fas fa-vest"></i> Jackets
+                </button>
+                <button class="tab-btn" data-category="accessories">
+                    <i class="fas fa-mitten"></i> Accessories
+                </button>
+            </div>
+            
+            <!-- Size Charts -->
+            <div class="size-charts">
+                <!-- Tops Chart -->
+                <div class="chart-container active" id="tops-chart">
+                    <h2 class="chart-title"><i class="fas fa-tshirt"></i> Men's Tops Size Chart</h2>
+                    
+                    <div class="unit-toggle">
+                        <button class="unit-btn active" data-unit="cm">Centimeters</button>
+                        <button class="unit-btn" data-unit="in">Inches</button>
+                    </div>
+                    
+                    <table class="size-table">
+                        <thead>
+                            <tr>
+                                <th>Size</th>
+                                <th>Chest (cm/in)</th>
+                                <th>Waist (cm/in)</th>
+                                <th>Hips (cm/in)</th>
+                                <th>Length (cm/in)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>S</td>
+                                <td>90 / 35.4</td>
+                                <td>70 / 27.5</td>
+                                <td>92 / 36.2</td>
+                                <td>65 / 25.6</td>
+                            </tr>
+                            <tr>
+                                <td>M</td>
+                                <td>95 / 37.4</td>
+                                <td>75 / 29.5</td>
+                                <td>98 / 38.6</td>
+                                <td>68 / 26.8</td>
+                            </tr>
+                            <tr>
+                                <td>L</td>
+                                <td>100 / 39.4</td>
+                                <td>80 / 31.5</td>
+                                <td>104 / 40.9</td>
+                                <td>72 / 28.3</td>
+                            </tr>
+                            <tr>
+                                <td>XL</td>
+                                <td>110 / 43.3</td>
+                                <td>90 / 35.4</td>
+                                <td>112 / 44.1</td>
+                                <td>75 / 29.5</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Bottoms Chart -->
+                <div class="chart-container" id="bottoms-chart">
+                    <h2 class="chart-title"><i class="fas fa-jeans"></i> Men's Bottoms Size Chart</h2>
+                    
+                    <div class="unit-toggle">
+                        <button class="unit-btn active" data-unit="cm">Centimeters</button>
+                        <button class="unit-btn" data-unit="in">Inches</button>
+                    </div>
+                    
+                    <table class="size-table">
+                        <thead>
+                            <tr>
+                                <th>Size</th>
+                                <th>Waist (cm/in)</th>
+                                <th>Hip (cm/in)</th>
+                                <th>Inseam (cm/in)</th>
+                                <th>Outseam (cm/in)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>30</td>
+                                <td>76 / 30</td>
+                                <td>92 / 36.2</td>
+                                <td>81 / 31.9</td>
+                                <td>104 / 41</td>
+                            </tr>
+                            <tr>
+                                <td>32</td>
+                                <td>81 / 32</td>
+                                <td>97 / 38.2</td>
+                                <td>81 / 31.9</td>
+                                <td>104 / 41</td>
+                            </tr>
+                            <tr>
+                                <td>34</td>
+                                <td>86 / 34</td>
+                                <td>102 / 40.2</td>
+                                <td>81 / 31.9</td>
+                                <td>104 / 41</td>
+                            </tr>
+                            <tr>
+                                <td>36</td>
+                                <td>91 / 36</td>
+                                <td>107 / 42.1</td>
+                                <td>81 / 31.9</td>
+                                <td>104 / 41</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Footwear Chart -->
+                <div class="chart-container" id="footwear-chart">
+                    <h2 class="chart-title"><i class="fas fa-shoe-prints"></i> Footwear Size Chart</h2>
+                    
+                    <table class="size-table">
+                        <thead>
+                            <tr>
+                                <th>US Size</th>
+                                <th>UK Size</th>
+                                <th>EU Size</th>
+                                <th>Foot Length (cm)</th>
+                                <th>Foot Length (in)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>7</td>
+                                <td>6</td>
+                                <td>40</td>
+                                <td>25.1</td>
+                                <td>9.88</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>7</td>
+                                <td>41</td>
+                                <td>25.9</td>
+                                <td>10.2</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>8</td>
+                                <td>42</td>
+                                <td>26.7</td>
+                                <td>10.5</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>9</td>
+                                <td>43</td>
+                                <td>27.5</td>
+                                <td>10.8</td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>10</td>
+                                <td>44</td>
+                                <td>28.3</td>
+                                <td>11.1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Measurement Guide -->
+            <div class="measurement-guide">
+                <div class="measurement-visual">
+                    <div class="silhouette">
+                        <div class="measure-point chest" data-measure="chest">
+                            <i class="fas fa-ruler"></i>
+                            <div class="tooltip">
+                                <h4><i class="fas fa-ruler"></i> Chest Measurement</h4>
+                                <p>Measure around the fullest part of your chest, keeping the tape level under your arms.</p>
+                            </div>
+                        </div>
+                        <div class="measure-point waist" data-measure="waist">
+                            <i class="fas fa-ruler"></i>
+                            <div class="tooltip">
+                                <h4><i class="fas fa-ruler"></i> Waist Measurement</h4>
+                                <p>Measure around your natural waistline, keeping the tape comfortably loose.</p>
+                            </div>
+                        </div>
+                        <div class="measure-point hips" data-measure="hips">
+                            <i class="fas fa-ruler"></i>
+                            <div class="tooltip">
+                                <h4><i class="fas fa-ruler"></i> Hip Measurement</h4>
+                                <p>Measure around the fullest part of your hips, about 8 inches below your waist.</p>
+                            </div>
+                        </div>
+                        <div class="measure-point inseam" data-measure="inseam">
+                            <i class="fas fa-ruler"></i>
+                            <div class="tooltip">
+                                <h4><i class="fas fa-ruler"></i> Inseam Measurement</h4>
+                                <p>Measure from the crotch to the bottom of your ankle along the inside of your leg.</p>
+                            </div>
+                        </div>
+                        <div class="measure-point foot" data-measure="foot">
+                            <i class="fas fa-ruler"></i>
+                            <div class="tooltip">
+                                <h4><i class="fas fa-ruler"></i> Foot Measurement</h4>
+                                <p>Measure your foot from heel to toe while standing. Do this for both feet.</p>
+                            </div>
+                        </div>
+                        <svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Human silhouette -->
+                            <path d="M100,20 C120,20 140,40 140,70 C140,100 120,120 100,120 C80,120 60,100 60,70 C60,40 80,20 100,20 Z" 
+                                  fill="#ddd" class="dark-theme" fill="#333"/>
+                            <path d="M80,120 C80,150 90,200 70,250 C50,300 80,350 100,380 C120,350 150,300 130,250 C110,200 120,150 120,120" 
+                                  fill="#ddd" class="dark-theme" fill="#333"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="measurement-instructions">
+                    <h3 class="instructions-title"><i class="fas fa-info-circle"></i> Measurement Instructions</h3>
+                    <ul class="instructions-list">
+                        <li>Use a soft, flexible measuring tape for accuracy.</li>
+                        <li>Measure over light clothing or undergarments.</li>
+                        <li>Keep the tape parallel to the floor and snug but not tight.</li>
+                        <li>For best results, have someone help you with measurements.</li>
+                        <li>Measure twice to ensure accuracy.</li>
+                        <li>Stand naturally with your weight evenly distributed.</li>
+                        <li>Refer to our size charts for specific garment measurements.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Size Recommender -->
+            <div class="size-recommender">
+                <h2 class="recommender-title">Find Your Recommended Size</h2>
+                
+                <form class="recommender-form" id="sizeRecommender">
+                    <div class="form-group">
+                        <label for="height"><i class="fas fa-arrows-alt-v"></i> Your Height</label>
+                        <select id="height" required>
+                            <option value="">Select height</option>
+                            <option value="short">Under 5'6" (168 cm)</option>
+                            <option value="average">5'6" to 6' (168-183 cm)</option>
+                            <option value="tall">Over 6' (183 cm)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="weight"><i class="fas fa-weight"></i> Your Weight</label>
+                        <select id="weight" required>
+                            <option value="">Select weight</option>
+                            <option value="light">Under 150 lbs (68 kg)</option>
+                            <option value="medium">150-190 lbs (68-86 kg)</option>
+                            <option value="heavy">Over 190 lbs (86 kg)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fit"><i class="fas fa-tshirt"></i> Fit Preference</label>
+                        <select id="fit" required>
+                            <option value="">Select fit</option>
+                            <option value="slim">Slim Fit</option>
+                            <option value="regular">Regular Fit</option>
+                            <option value="oversized">Oversized Fit</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="recommend-btn">Find My Size</button>
+                </form>
+                
+                <div class="recommendation-result" id="recommendationResult">
+                    <p class="result-text" id="resultText">We recommend size L based on your input</p>
+                    <button class="result-cta" id="viewProductsBtn">View Products in This Size</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>StyleHub</h3>
+                    <p>Premium men's fashion for the modern gentleman. Quality craftsmanship meets contemporary style.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="shop.html">Size Guide</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Customer Service</h3>
+                    <ul class="footer-links">
+                        <li><a href="FAQ.html">FAQs</a></li>
+                        <li><a href="FAQ.html">Shipping Policy</a></li>
+                        <li><a href="return.html">Returns & Exchanges</a></li>
+                        <li><a href="#">Order Tracking</a></li>
+                        <li><a href="sizeguide.html">Size Guide</a></li>
+                    </ul>
+                </div>
+               
+        <div class="footer-column">
+    <h3>Newsletter</h3>
+    <p>Subscribe to get special offers, free giveaways, and new product alerts.</p>
+    <div id="newsletterContainer">
+        <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Your email address" required>
+            <button type="submit" class="btn newsletter-btn">Subscribe</button>
+        </form>
+    </div>
+</div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 StyleHub. All Rights Reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
+
+
+</body>
+</html>

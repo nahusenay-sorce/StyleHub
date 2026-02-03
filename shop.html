@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleHub | Shop Men's Fashion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shop.css">
+    <script src="shop.js"></script>
+</head>
+<body>
+    <!-- Homepage Content -->
+    <div id="shopContent">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container navbar-container">
+                <a href="#" class="logo">Style<span>Hub</span></a>
+                <ul class="nav-links">
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="shop.html" class="active">Shop</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                    <li><a href="checkout.html">Checkout</a></li>
+                    <li><a href="wishlist.html">Wishlist</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="FAQ.html">FAQ</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" id="shopSearch" placeholder="Search jackets, shoes, styles...">
+                    </div>
+                    <div class="action-icon">
+                       <a href="wishlist.html"><i class="fas fa-heart"></i></a>
+                        <span class="icon-badge" id="wishlistCount">0</span>
+                    </div>
+                    <div class="action-icon">
+                        <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+                        <span class="icon-badge" id="cartCount">0</span>
+                    </div>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Shop Header -->
+         <section class="shop-header" style="background: linear-gradient(rgba(10, 37, 64, 0.9), rgba(10, 37, 64, 0.9)), url('https://images.unsplash.com/photo-1543087903-1ac2ec7aa8c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1800&q=80'); background-size: cover; background-position: center; padding: 120px 0; text-align: center; color: white;"></section>
+            <div class="container">
+                <h1 class="section-title" style="color: white;">Discover Premium Fashion</h1>
+                <p style="font-size: 1.2rem; max-width: 700px; margin: 0 auto;">Explore our curated collection of premium men's fashion. Crafted for the modern man who values quality, style, and comfort.</p>
+            </div>
+        </section>
+
+        <!-- Shop Controls -->
+        <section class="shop-controls-section" style="padding: 40px 0 0;">
+            <div class="container">
+                <div class="shop-controls">
+                    <div class="control-group">
+                        <label for="categoryFilter">Category</label>
+                        <select id="categoryFilter">
+                            <option value="all">All Categories</option>
+                            <option value="jackets">Jackets & Coats</option>
+                            <option value="shirts">Shirts & Tops</option>
+                            <option value="pants">Pants & Jeans</option>
+                            <option value="footwear">Footwear</option>
+                            <option value="accessories">Accessories</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="priceRange">Price Range</label>
+                        <input type="range" id="priceRange" class="price-slider" min="0" max="500" value="500">
+                        <div class="price-range">
+                            <span>$0</span>
+                            <input type="text" id="priceDisplay" value="$500" readonly style="text-align: center;">
+                            <span>$500</span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="sortBy">Sort By</label>
+                        <select id="sortBy">
+                            <option value="default">Default</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="newest">Newest First</option>
+                            <option value="rating">Top Rated</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Items Per Page</label>
+                        <div class="items-per-page">
+                            <button class="items-btn active" data-items="12">12</button>
+                            <button class="items-btn" data-items="24">24</button>
+                            <button class="items-btn" data-items="48">48</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="products" style="padding: 20px 0 40px;">
+            <div class="container">
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be dynamically inserted here -->
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination" id="pagination">
+                    <!-- Pagination will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-column">
+                        <h3>StyleHub</h3>
+                        <p>Premium men's fashion for the modern gentleman. Quality craftsmanship meets contemporary style.</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-pinterest-p"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Quick Links</h3>
+                        <ul class="footer-links">
+                            <li><a href="home.html">Home</a></li>
+                            <li><a href="shop.html">Shop</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Customer Service</h3>
+                        <ul class="footer-links">
+                            <li><a href="FAQ.html">FAQs</a></li>
+                            <li><a href="FAQ.html">Shipping Policy</a></li>
+                            <li><a href="return.html">Returns & Exchanges</a></li>
+                            <li><a href="#">Order Tracking</a></li>
+                            <li><a href="sizeguide.html">Size Guide</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Newsletter</h3>
+                        <p>Subscribe to get special offers, free giveaways, and new product alerts.</p>
+                        <form class="newsletter-form">
+                            <input type="email" class="newsletter-input" placeholder="Your email address">
+                            <button type="submit" class="btn newsletter-btn">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2025 StyleHub. All Rights Reserved. | Privacy Policy | Terms of Service</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Product Modal -->
+        <div class="product-modal" id="productModal">
+            <div class="modal-content">
+                <button class="close-modal" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="modal-body">
+                    <div class="modal-image">
+                        <img src="" alt="Product" id="modalImg">
+                    </div>
+                    <div class="modal-details">
+                        <h2 class="modal-title" id="modalTitle"></h2>
+                        <div class="modal-price" id="modalPrice"></div>
+                        <div class="modal-rating" id="modalRating"></div>
+                        <p class="modal-description" id="modalDescription"></p>
+                        <div class="modal-sizes">
+                            <div class="size-title">Size:</div>
+                            <div class="size-options">
+                                <div class="size-option">S</div>
+                                <div class="size-option selected">M</div>
+                                <div class="size-option">L</div>
+                                <div class="size-option">XL</div>
+                                <div class="size-option">XXL</div>
+                            </div>
+                        </div>
+                        <div class="modal-actions">
+                            <button class="btn btn-wishlist" id="modalWishlist">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="btn btn-addtocart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
