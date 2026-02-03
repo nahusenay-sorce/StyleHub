@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleHub | Your Wishlist</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="wishlist.css">
+    <script src="wishlist.js"></script>
+ </head>
+ <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="#" class="logo">Style<span>Hub</span></a>
+            <ul class="nav-links">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="checkout.html">Checkout</a></li>
+                <li><a href="wishlist.html" class="active">Wishlist</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="FAQ.html">FAQ</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div class="action-icon">
+                   <a href="wishlist.html"><i class="fas fa-heart"></i></a>
+                    <span class="icon-badge" id="wishlistCount">0</span>
+                </div>
+                <div class="action-icon">
+                   <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+                    <span class="icon-badge" id="cartCount">0</span>
+                </div>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <!-- Wishlist Section -->
+    <section class="wishlist-section">
+        <div class="container">
+            <h2 class="section-title">Your Fashion Vault</h2>
+            <div class="wishlist-grid" id="wishlistGrid">
+                <!-- Wishlist items will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle toast-icon"></i>
+        <span class="toast-message">Product added to cart!</span>
+    </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>StyleHub</h3>
+                    <p>Premium men's fashion for the modern gentleman. Quality craftsmanship meets contemporary style.
+ </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Customer Service</h3>
+                    <ul class="footer-links">
+                        <li><a href="FAQ.html">FAQs</a></li>
+                        <li><a href="FAQ.html">Shipping Policy</a></li>
+                        <li><a href="return.html">Returns & Exchanges</a></li>
+                        <li><a href="#">Order Tracking</a></li>
+                        <li><a href="sizeguide.html">Size Guide</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to get special offers, free giveaways, and new product alerts.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Your email address">
+                        <button type="submit" class="btn newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 StyleHub. All Rights Reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
+   
+ </body>
+ </html>
