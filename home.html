@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleHub | Premium Men's Fashion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <link rel="stylesheet" href="home.css">
+     <script src="home.js"></script>
+     <style>
+.search-container {
+  position: relative;
+  width: 300px;
+  margin-right: 20px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 15px 12px 40px;
+  border-radius: 30px;
+  border: 1px solid var(--border);
+  background: var(--background);
+  color: var(--text);
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.2);
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 400px;
+  overflow-y: auto;
+  background: var(--card-bg);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 10px 15px var(--shadow);
+  z-index: 1000;
+  display: none;
+  margin-top: 5px;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid var(--border);
+}
+
+.search-result-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.search-result-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 15px;
+}
+
+.search-result-info {
+  flex: 1;
+}
+
+.search-result-name {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: var(--text);
+}
+
+.search-result-price {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.no-results {
+  padding: 15px;
+  text-align: center;
+  color: var(--text-light);
+}
+
+/* Product Modal Styles */
+.product-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  border-radius: 10px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.modal-body {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.modal-image {
+  flex: 1;
+  min-width: 300px;
+  height: 400px;
+}
+
+.modal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px 0 0 0;
+}
+
+.modal-details {
+  flex: 1;
+  min-width: 300px;
+  padding: 30px;
+}
+
+.modal-title {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.modal-price {
+  font-size: 1.5rem;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.modal-rating {
+  color: #ffc107;
+  margin-bottom: 20px;
+}
+
+.modal-description {
+  margin-bottom: 25px;
+  line-height: 1.8;
+  color: var(--text-light);
+}
+
+.modal-sizes {
+  margin-bottom: 25px;
+}
+
+.size-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.size-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.size-option {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.size-option:hover, .size-option.selected {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn-wishlist {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  border-radius: 4px;
+}
+
+.btn-wishlist.active {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-addtocart {
+  flex: 1;
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .modal-body {
+    flex-direction: column;
+  }
+  
+  .modal-image {
+    height: 300px;
+    border-radius: 10px 10px 0 0;
+  }
+}
+     </style>
+ </head>
+ <body>
+    <!-- Login Modal -->
+    <div class="login-modal active" id="loginModal">
+        <div class="login-form">
+            <button class="close-modal" id="closeLogin">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="form-title">Welcome to StyleHub</h2>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email">
+                <div class="error-message" id="emailError">Please enter a valid email</div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password">
+                <div class="error-message" id="passwordError">Password must be at least 6 characters</div>
+            </div>
+            <button class="btn btn-primary" id="loginBtn">Login</button>
+            <div class="form-footer">
+                <p>Don't have an account? <a href="#" id="signupLink">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+    <!-- Homepage Content (Hidden until login) -->
+    <div id="homepageContent" style="display: none;">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container navbar-container">
+                <a href="#" class="logo">Style<span>Hub</span></a>
+                <ul class="nav-links">
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                    <li><a href="checkout.html">Checkout</a></li>
+                    <li><a href="wishlist.html">Wishlist</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="FAQ.html">FAQ</a></li>
+                </ul>
+                <div class="nav-actions">
+<div class="search-container">
+  <i class="fas fa-search search-icon"></i>
+  <input type="text" class="search-input" placeholder="Search jackets, shoes, styles..." id="searchInput">
+  <div class="search-results" id="searchResults"></div>
+</div>
+                    <div class="action-icon">
+                       <a href="wishlist.html"><i class="fas fa-heart"></i></a>
+                        <span class="icon-badge" id="wishlistCount">0</span>
+                    </div>
+                    <div class="action-icon">
+                        <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+                        <span class="icon-badge" id="cartCount">0</span>
+                    </div>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <!-- Hero Carousel -->
+            <div class="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" style="background-image: url('bg-33.jpg');">
+                        <div class="carousel-content">
+                            <a href="shop.html"><h2>Elevate Your Style</h2></a>
+                            <p>Discover premium craftsmanship and timeless designs for the modern man</p>
+                            <a href="shop.html"><button class="btn carousel-btn">Shop Collection</button></a>
+                        </div>
+                    </div>
+                    <div class="carousel-item" style="background-image: url('bg-3.jpg');">
+                        <div class="carousel-content">
+                            <h2>Summer Essentials</h2>
+                            <p>Lightweight fabrics and versatile styles for warm weather adventures</p>
+                          <a href="shop.html"><button class="btn carousel-btn">Explore New Arrivals</button></a>
+                        </div>
+                    </div>
+                    <div class="carousel-item" style="background-image: url('bg-2.jpg');">
+                        <div class="carousel-content">
+                            <h2>Executive Collection</h2>
+                            <p>Sharp tailoring and premium fabrics for the boardroom and beyond</p>
+                           <a href="shop.html"><button class="btn carousel-btn">Shop Formalwear</button></a>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-arrow carousel-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-arrow carousel-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="carousel-controls">
+                    <div class="carousel-dot active"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+        <!-- Categories Section -->
+        <section class="categories">
+            <div class="container">
+                <h2 class="section-title">Shop by Category</h2>
+                <div class="categories-grid">
+                    <div class="category-card">
+                       <a href="shop.html"><img src="jacket-1.jpg"alt="Jackets" class="category-img"></a>
+                        <div class="category-overlay">
+                            <h3 class="category-title">Jackets & Coats</h3>
+                            <p>Explore Collection</p>
+                        </div>
+                    </div>
+                    <div class="category-card">
+                       <a href="shop.html"><img src="shirt-1.jpg"alt="Shirts" class="category-img"></a>
+                        <div class="category-overlay">
+                            <h3 class="category-title">Shirts & Tops</h3>
+                            <p>Explore Collection</p>
+                        </div>
+                    </div>
+                    <div class="category-card">
+                        <a href="shop.html"><img src="jeans-1.jpg" alt="Pants" class="category-img"></a>
+                        <div class="category-overlay">
+                            <h3 class="category-title">Pants & Jeans</h3>
+                            <p>Explore Collection</p>
+                        </div>
+                    </div>
+                    <div class="category-card">
+                       <a href="shop.html"><img src="shoe-1.jpg"  alt="Footwear" class="category-img"></a>
+                        <div class="category-overlay">
+                            <h3 class="category-title">Footwear</h3>
+                            <p>Explore Collection</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Products Section -->
+        <section class="products">
+            <div class="container">
+                <h2 class="section-title">Featured Collection</h2>
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+        <!-- Promo Section -->
+        <section class="promo-section">
+            <div class="container">
+                <div class="promo-content">
+                    <h2 class="promo-title">Summer Sale</h2>
+                    <p class="promo-subtitle">Up to 40% off on select summer styles. Limited time offer!</p>
+                    <div class="promo-timer">
+                        <div class="timer-box">
+                            <div class="timer-value" id="days">02</div>
+                            <div class="timer-label">Days</div>
+                        </div>
+                        <div class="timer-box">
+                            <div class="timer-value" id="hours">12</div>
+                            <div class="timer-label">Hours</div>
+                        </div>
+                        <div class="timer-box">
+                            <div class="timer-value" id="minutes">45</div>
+                            <div class="timer-label">Minutes</div>
+                        </div>
+                        <div class="timer-box">
+                            <div class="timer-value" id="seconds">30</div>
+                            <div class="timer-label">Seconds</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary">Shop The Sale</button>
+                </div>
+            </div>
+        </section>
+        <!-- Benefits Section -->
+        <section class="benefits">
+            <div class="container">
+                <h2 class="section-title">Why Shop With Us</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <h3 class="benefit-title">Free Shipping</h3>
+                        <p>Free worldwide shipping on all orders over $100</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-undo"></i>
+                        </div>
+                        <h3 class="benefit-title">Easy Returns</h3>
+                        <p>30-day hassle-free returns and exchanges</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="benefit-title">Secure Payment</h3>
+                        <p>Your payment information is always protected</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3 class="benefit-title">24/7 Support</h3>
+                        <p>Dedicated customer support whenever you need</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Testimonials Section -->
+        <section class="testimonials">
+            <div class="container">
+                <h2 class="section-title">What Our Customers Say</h2>
+                <div class="testimonial-container">
+                    <div class="testimonial-slide active">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Customer" class="testimonial-avatar">
+                        <p class="testimonial-text">The quality of their jackets is unmatched. I've been a customer for over 3 years
+ and their products only get better. Perfect fit every time.</p>
+                        <h4 class="testimonial-author">Michael Reynolds</h4>
+                        <p class="testimonial-role">Loyal Customer</p>
+                    </div>
+                    <div class="testimonial-slide">
+                        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Customer" class="testimonial-avatar">
+                        <p class="testimonial-text">I ordered three shirts for a business trip and they arrived the next day. The
+ customer service team was incredibly helpful with sizing questions.</p>
+                        <h4 class="testimonial-author">David Chen</h4>
+                        <p class="testimonial-role">First-time Buyer</p>
+                    </div>
+                    <div class="testimonial-slide">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Customer" class="testimonial-avatar">
+                        <p class="testimonial-text">Their attention to detail is exceptional. From packaging to product quality,
+ everything feels premium. Worth every penny for the style and comfort.</p>
+                        <h4 class="testimonial-author">James Wilson</h4>
+                        <p class="testimonial-role">Fashion Enthusiast</p>
+                    </div>
+                    <div class="testimonial-nav">
+                        <div class="testimonial-dot active"></div>
+                        <div class="testimonial-dot"></div>
+                        <div class="testimonial-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-column">
+                        <h3>StyleHub</h3>
+                        <p>Premium men's fashion for the modern gentleman. Quality craftsmanship meets contemporary style.</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-pinterest-p"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Quick Links</h3>
+                        <ul class="footer-links">
+                            <li><a href="home.html">Home</a></li>
+                            <li><a href="shop.html">Shop</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Customer Service</h3>
+                        <ul class="footer-links">
+                            <li><a href="FAQ.html">FAQs</a></li>
+                            <li><a href="FAQ.html">Shipping Policy</a></li>
+                            <li><a href="return.html">Returns & Exchanges</a></li>
+                            <li><a href="#">Order Tracking</a></li>
+                            <li><a href="sizeguide.html">Size Guide</a></li>
+                        </ul>
+                    </div>
+    <div class="footer-column">
+    <h3>Newsletter</h3>
+    <p>Subscribe to get special offers, free giveaways, and new product alerts.</p>
+    <div id="newsletterContainer">
+        <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Your email address" required>
+            <button type="submit" class="btn newsletter-btn">Subscribe</button>
+        </form>
+    </div>
+</div>
+                <div class="footer-bottom">
+                    <p>&copy; 2025 StyleHub. All Rights Reserved. | Privacy Policy | Terms of Service</p>
+                </div>
+            </div>
+        </footer>
+        <!-- Product Modal -->
+        <div class="product-modal" id="productModal">
+            <div class="modal-content">
+                <button class="close-modal" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="modal-body">
+                    <div class="modal-image">
+                        <img src="" alt="Product" id="modalImg">
+                    </div>
+                    <div class="modal-details">
+                        <h2 class="modal-title" id="modalTitle"></h2>
+                        <div class="modal-price" id="modalPrice"></div>
+                        <div class="modal-rating" id="modalRating"></div>
+                        <p class="modal-description" id="modalDescription"></p>
+                        <div class="modal-sizes">
+                            <div class="size-title">Size:</div>
+                            <div class="size-options">
+                                <div class="size-option">S</div>
+                                <div class="size-option selected">M</div>
+                                <div class="size-option">L</div>
+                                <div class="size-option">XL</div>
+                                <div class="size-option">XXL</div>
+                            </div>
+                        </div>
+                        <div class="modal-actions">
+                            <button class="btn btn-wishlist" id="modalWishlist">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="btn btn-addtocart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<script>
+    
+document.addEventListener('DOMContentLoaded', function() {
+  // Sample product data (15 items)
+  const products = [
+    {
+      id: 1,
+      name: "Classic White T-Shirt",
+      price: 24.99,
+      image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      rating: 4.5,
+      description: "Premium cotton crew neck t-shirt with a classic fit. Perfect for layering or wearing on its own."
+    },
+    {
+      id: 2,
+      name: "Slim Fit Jeans",
+      price: 59.99,
+      image: "https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      rating: 4.7,
+      description: "Stretch denim jeans with a modern slim fit. Comfortable waistband and durable construction."
+    },
+    {
+      id: 3,
+      name: "Casual Button-Down Shirt",
+      price: 44.99,
+      image: "down.jpg",
+      rating: 4.3,
+      description: "Versatile button-down shirt in a relaxed fit. Perfect for casual Fridays or weekend outings."
+    },
+    {
+      id: 4,
+      name: "Leather Belt",
+      price: 34.99,
+      image: "belts.jpg",
+      rating: 4.8,
+      description: "Genuine leather belt with a polished buckle. Available in multiple sizes and finishes."
+    },
+    {
+      id: 5,
+      name: "Running Sneakers",
+      price: 79.99,
+      image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      rating: 4.6,
+      description: "Lightweight running shoes with cushioned soles for maximum comfort during workouts."
+    },
+    {
+      id: 6,
+      name: "Winter Parka",
+      price: 129.99,
+      image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      rating: 4.9,
+      description: "Heavy-duty winter parka with waterproof exterior and insulated lining for extreme cold."
+    },
+    {
+      id: 7,
+      name: "Casual Loafers",
+      price: 64.99,
+      image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      rating: 4.4,
+      description: "Comfortable slip-on loafers perfect for business casual or weekend wear."
+    },
+    {
+      id: 8,
+      name: "Denim Jacket",
+      price: 89.99,
+      image: "jacket-2 (2).jpg",
+      rating: 4.7,
+      description: "Classic denim jacket with a modern fit. Features multiple pockets and durable construction."
+    },
+    {
+      id: 9,
+      name: "Cotton Polo Shirt",
+      price: 39.99,
+      image: "shirt-1.jpg",
+      rating: 4.2,
+      description: "Breathable cotton polo shirt with a comfortable fit. Perfect for casual or smart casual occasions."
+    },
+    {
+      id: 10,
+      name: "Wool Blazer",
+      price: 149.99,
+      image: "blazer.jpg",
+      rating: 4.8,
+      description: "Premium wool blazer with a tailored fit. Features notch lapels and functional buttons."
+    },
+    {
+      id: 11,
+      name: "Cargo Shorts",
+      price: 49.99,
+      image: "https://images.unsplash.com/photo-1595341888016-a392ef81b7de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      rating: 4.3,
+      description: "Durable cargo shorts with multiple pockets. Made from quick-dry fabric for summer comfort."
+    },
+    {
+      id: 12,
+      name: "Leather Wallet",
+      price: 29.99,
+      image: "https://images.unsplash.com/photo-1601593768793-21d5c3d1a216?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      rating: 4.6,
+      description: "Slim leather wallet with multiple card slots and a cash compartment. RFID blocking available."
+    },
+    {
+      id: 13,
+      name: "Athletic Shorts",
+      price: 34.99,
+      image: "https://images.unsplash.com/photo-1592302310330-0d8a5d3e9a48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      rating: 4.5,
+      description: "Performance athletic shorts with moisture-wicking fabric and built-in liner."
+    },
+    {
+      id: 14,
+      name: "Dress Shoes",
+      price: 99.99,
+      image: "https://images.unsplash.com/photo-1463100099107-aa0980c362e6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      rating: 4.7,
+      description: "Classic oxford dress shoes with genuine leather upper and cushioned insole."
+    },
+    {
+      id: 15,
+      name: "Knit Sweater",
+      price: 69.99,
+      image: "https://images.unsplash.com/photo-1525450824786-227cbef70703?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      rating: 4.4,
+      description: "Warm knit sweater with a crew neck. Perfect for layering in cooler weather."
+    }
+  ];
+
+  // DOM Elements
+  const searchInput = document.getElementById('searchInput');
+  const searchResults = document.getElementById('searchResults');
+
+  // Create product modal element
+  const productModal = document.createElement('div');
+  productModal.className = 'product-modal';
+  productModal.id = 'productModal';
+  productModal.innerHTML = `
+    <div class="modal-content">
+      <button class="close-modal" id="closeModal">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="modal-body">
+        <div class="modal-image">
+          <img src="" alt="Product" id="modalImg">
+        </div>
+        <div class="modal-details">
+          <h2 class="modal-title" id="modalTitle"></h2>
+          <div class="modal-price" id="modalPrice"></div>
+          <div class="modal-rating" id="modalRating"></div>
+          <p class="modal-description" id="modalDescription"></p>
+          <div class="modal-sizes">
+            <div class="size-title">Size:</div>
+            <div class="size-options">
+              <div class="size-option">S</div>
+              <div class="size-option selected">M</div>
+              <div class="size-option">L</div>
+              <div class="size-option">XL</div>
+              <div class="size-option">XXL</div>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-wishlist" id="modalWishlist">
+              <i class="far fa-heart"></i>
+            </button>
+            <button class="btn btn-addtocart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(productModal);
+
+  // Search functionality
+  searchInput.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase().trim();
+    searchResults.innerHTML = '';
+    
+    if (searchTerm.length === 0) {
+      searchResults.style.display = 'none';
+      return;
+    }
+    
+    const filteredProducts = products.filter(product => 
+      product.name.toLowerCase().includes(searchTerm)
+    );
+    
+    if (filteredProducts.length > 0) {
+      filteredProducts.forEach(product => {
+        const resultItem = document.createElement('div');
+        resultItem.className = 'search-result-item';
+        resultItem.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" class="search-result-img">
+          <div class="search-result-info">
+            <div class="search-result-name">${product.name}</div>
+            <div class="search-result-price">$${product.price.toFixed(2)}</div>
+          </div>
+        `;
+        resultItem.addEventListener('click', () => {
+          openProductModal(product.id);
+          searchResults.style.display = 'none';
+          searchInput.value = '';
+        });
+        searchResults.appendChild(resultItem);
+      });
+      searchResults.style.display = 'block';
+    } else {
+      const noResults = document.createElement('div');
+      noResults.className = 'no-results';
+      noResults.textContent = 'No products found';
+      searchResults.appendChild(noResults);
+      searchResults.style.display = 'block';
+    }
+  });
+
+  // Close search results when clicking outside
+ document.addEventListener('click', function(e) {
+    if (!searchInput.contains(e.target)) {  // Added missing parenthesis
+      searchResults.style.display = 'none';
+    }
+});
+
+  // Open product modal
+  function openProductModal(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+    
+    document.getElementById('modalImg').src = product.image;
+    document.getElementById('modalTitle').textContent = product.name;
+    document.getElementById('modalPrice').textContent = `$${product.price.toFixed(2)}`;
+    document.getElementById('modalRating').innerHTML = generateRatingStars(product.rating);
+    document.getElementById('modalDescription').textContent = product.description;
+    
+    // Wishlist functionality
+    const wishlistBtn = document.getElementById('modalWishlist');
+    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    const isInWishlist = wishlist.includes(product.id);
+    
+    if (isInWishlist) {
+      wishlistBtn.innerHTML = '<i class="fas fa-heart"></i>';
+      wishlistBtn.classList.add('active');
+    } else {
+      wishlistBtn.innerHTML = '<i class="far fa-heart"></i>';
+      wishlistBtn.classList.remove('active');
+    }
+    
+    wishlistBtn.addEventListener('click', function() {
+      toggleWishlist(product.id, this);
+    });
+    
+    // Add to cart functionality
+    document.querySelector('.btn-addtocart').addEventListener('click', function() {
+      addToCart(product.id);
+      updateCartCount();
+      document.getElementById('productModal').classList.remove('active');
+    });
+    
+    // Size selection
+    document.querySelectorAll('.size-option').forEach(option => {
+      option.addEventListener('click', function() {
+        document.querySelectorAll('.size-option').forEach(o => o.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+    
+    // Close modal
+    document.getElementById('closeModal').addEventListener('click', function() {
+      document.getElementById('productModal').classList.remove('active');
+    });
+    
+    // Show modal
+    document.getElementById('productModal').classList.add('active');
+  }
+
+  // Helper function to generate rating stars
+  function generateRatingStars(rating) {
+    let stars = '';
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 >= 0.5;
+    
+    for (let i = 0; i < fullStars; i++) {
+      stars += '<i class="fas fa-star"></i>';
+    }
+    
+    if (halfStar) {
+      stars += '<i class="fas fa-star-half-alt"></i>';
+    }
+    
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+    for (let i = 0; i < emptyStars; i++) {
+      stars += '<i class="far fa-star"></i>';
+    }
+    
+    return stars;
+  }
+
+  // Wishlist functionality
+  function toggleWishlist(productId, element) {
+    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    const index = wishlist.indexOf(productId);
+    
+    if (index === -1) {
+      wishlist.push(productId);
+      element.innerHTML = '<i class="fas fa-heart"></i>';
+      element.classList.add('active');
+    } else {
+      wishlist.splice(index, 1);
+      element.innerHTML = '<i class="far fa-heart"></i>';
+      element.classList.remove('active');
+    }
+    
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    updateWishlistCount();
+  }
+
+  // Cart functionality
+  function addToCart(productId) {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const product = products.find(p => p.id === productId);
+    
+    if (product) {
+      const existingItem = cart.find(item => item.id === product.id);
+      
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          quantity: 1
+        });
+      }
+      
+      localStorage.setItem('cart', JSON.stringify(cart));
+      showSuccessMessage(`${product.name} added to cart!`);
+    }
+  }
+
+  // Update cart count in navbar
+  function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const cartCount = document.querySelector('.cart-count'); // Make sure you have this element in your navbar
+    if (cartCount) {
+      cartCount.textContent = cart.length;
+    }
+  }
+
+  // Update wishlist count in navbar
+  function updateWishlistCount() {
+    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    const wishlistCount = document.querySelector('.wishlist-count'); // Make sure you have this element in your navbar
+    if (wishlistCount) {
+      wishlistCount.textContent = wishlist.length;
+    }
+  }
+
+  // Show success message
+  function showSuccessMessage(message) {
+    const successMsg = document.createElement('div');
+    successMsg.textContent = message;
+    successMsg.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--success);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 5px;
+      z-index: 1000;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      animation: slideIn 0.3s, fadeOut 0.5s 2.5s;
+    `;
+    
+    document.body.appendChild(successMsg);
+    
+    setTimeout(() => {
+      successMsg.remove();
+    }, 3000);
+  }
+
+  // Initialize counts on page load
+  updateCartCount();
+  updateWishlistCount();
+});
+    
+
+
+
+
+
+
+//subscription
+document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const emailInput = this.querySelector('.newsletter-input');
+    const email = emailInput.value;
+    const container = document.getElementById('newsletterContainer');
+    const originalForm = container.innerHTML;
+    
+    // Basic email validation
+    if (!email || !email.includes('@') || !email.includes('.')) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+    
+    // Show success message
+    container.innerHTML = `
+        <div class="newsletter-form" style="padding: 10px; text-align: center;">
+            <p style="color: green; margin: 0;">✓ Thank you for subscribing!</p>
+        </div>
+    `;
+    
+    // Return to original form after 3 seconds
+    setTimeout(() => {
+        container.innerHTML = originalForm;
+        // Reattach the event listener to the new form
+        document.querySelector('.newsletter-form').addEventListener('submit', arguments.callee);
+    }, 3000);
+    
+    // In a real app, you would send the data to your server here
+    // fetch('/api/subscribe', { ... });
+});
+</script>
+ </body>
+ </html>

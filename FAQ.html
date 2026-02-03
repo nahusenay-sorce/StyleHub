@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleHub | FAQs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="FAQ.css">
+    <script src="FAQ.JS"></script>
+ </head>
+ <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="#" class="logo">Style<span>Hub</span></a>
+            <ul class="nav-links">
+                <li><a href="home.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                    <li><a href="checkout.html">Checkout</a></li>
+                    <li><a href="wishlist.html">Wishlist</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="FAQ.html" class="active">FAQ</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div class="action-icon">
+                    <a href="wishlist.html"><i class="fas fa-heart"></i></a>
+                    <span class="icon-badge" id="wishlistCount">0</span>
+                </div>
+                <div class="action-icon">
+                  <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+                    <span class="icon-badge" id="cartCount">0</span>
+                </div>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <section class="faq-hero">
+        <div class="container">
+            <h1>Got Questions? We've Got Answers.</h1>
+            <p>Everything you need to know about our products, services, and policies. Can't find what you're looking for?
+ Contact us directly.</p>
+            <div class="search-container">
+                <div class="search-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <input type="text" class="search-input" id="faqSearch" placeholder="Search for answers...">
+                <div class="search-results" id="searchResults">
+                    <!-- Search results will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- FAQ Sections -->
+    <section class="faq-section">
+        <div class="container">
+            <!-- Shipping & Delivery -->
+            <div class="faq-section" id="shipping">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h2 class="section-title">Shipping & Delivery</h2>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-question">
+                        <span>What countries do you ship to?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We currently ship to over 100 countries worldwide, including all major markets in North America,
+ Europe, Asia, and Australia. During checkout, you can enter your address to see if we deliver to your location.</p>
+                    </div>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-question">
+                        <span>How much does shipping cost?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Shipping costs vary based on your location and order value:</p>
+                        <ul>
+                            <li><strong>Domestic:</strong> $4.99 for orders under $50, free for orders over $50</li>
+                            <li><strong>International:</strong> Calculated at checkout based on destination and package weight</li>
+                            <li><strong>Express Shipping:</strong> Flat rate of $19.99 for 2-3 day delivery</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-question">
+                        <span>Do you offer free shipping?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! We offer free standard shipping on all domestic orders over $50. For international orders, free
+ shipping is available on orders over $150. Some promotional items may have different shipping terms.</p>
+                    </div>
+                </div>
+                <!-- Additional questions for Shipping & Delivery -->
+                <div class="faq-accordion">
+                    <div class="faq-question">
+                        <span>How long does delivery take?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Delivery times vary based on your location and shipping method:</p>
+                        <ul>
+                            <li><strong>Standard Domestic:</strong> 3-7 business days</li>
+                            <li><strong>Express Domestic:</strong> 2-3 business days</li>
+                            <li><strong>International Standard:</strong> 7-14 business days</li>
+                            <li><strong>International Express:</strong> 3-5 business days</li>
+                        </ul>
+                        <p>Note: These are estimates and may be affected by customs processing in your country.</p>
+                    </div>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-question">
+                        <span>Can I track my order?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, all orders include tracking. Once your order ships, you'll receive an email with your tracking
+ number and a link to monitor your package's progress. You can also view tracking information in your account
+ dashboard.</p>
+                    </div>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-question">
+                        <span>Do you ship internationally?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we ship to over 100 countries worldwide. International shipping rates and delivery times vary by
+ destination. During checkout, you'll see the exact cost for your location.</p>
+                    </div>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-question">
+                        <span>What courier services do you use?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We partner with several reliable carriers depending on your location:</p>
+                        <ul>
+                            <li><strong>Domestic:</strong> UPS, FedEx, USPS</li>
+                            <li><strong>International:</strong> DHL, FedEx International</li>
+                            <li><strong>Specialty Items:</strong> Specialized carriers for fragile or high-value items</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-question">
+                        <span>Can I change my shipping address after ordering?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can change your shipping address within 2 hours of placing your order by contacting customer
+ service. After that, changes may not be possible as your order enters our fulfillment system. If your order has shipped,
+ we cannot reroute packages.</p>
+                    </div>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-question">
+                        <span>What if my package is delayed?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>While we make every effort to deliver on time, occasional delays can occur due to weather, customs, or
+ carrier issues. If your package is significantly delayed:</p>
+                        <ol>
+                            <li>Check the tracking information for updates</li>
+                            <li>Contact the carrier directly with your tracking number</li>
+                            <li>If unresolved, contact our support team for assistance</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-question">
+                        <span>What if my package is lost or stolen?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>If your tracking shows delivered but you haven't received your package:</p>
+                        <ol>
+                            <li>Check with neighbors or building management</li>
+                            <li>Contact the carrier to verify delivery details</li>
+                            <li>If confirmed lost/stolen, contact us within 7 days</li>
+                        </ol>
+                        <p>We'll work with the carrier to resolve the issue and arrange a replacement or refund.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Returns & Exchanges -->
+            <div class="faq-section" id="returns">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h2 class="section-title">Returns & Exchanges</h2>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-question">
+                        <span>What's your return policy?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We offer a 30-day satisfaction guarantee on all regular-priced items. Items must be:</p>
+                        <ul>
+                            <li>Unworn and unwashed</li>
+                            <li>In original condition with tags attached</li>
+                            <li>Accompanied by proof of purchase</li>
+                        </ul>
+                        <p>Final sale items are not eligible for return or exchange.</p>
+                    </div>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-question">
+                        <span>How do I initiate a return?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>To initiate a return:</p>
+                        <ol>
+                            <li>Log in to your account and visit the Orders section</li>
+                            <li>Select the item(s) you wish to return</li>
+                            <li>Print the prepaid return label</li>
+                            <li>Package your items securely and attach the label</li>
+                            <li>Drop off at any carrier location</li>
+                        </ol>
+                        <p>Guest customers can start returns using the order number and email address.</p>
+                    </div>
+                </div>
+                <!-- Additional questions for Returns & Exchanges -->
+                <div class="faq-accordion">
+                    <div class="faq-question">
+                        <span>Can I exchange an item instead of returning it?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we offer free exchanges for size or color within 30 days. To exchange an item:</p>
+                        <ol>
+                            <li>Initiate a return as described above</li>
+                            <li>Select "Exchange" instead of "Return"</li>
+                            <li>Choose the replacement item you want</li>
+                            <li>We'll ship your new item once we receive your return</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-question">
+                        <span>How long do returns take to process?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Once we receive your return:</p>
+                        <ul>
+                            <li>Processing takes 3-5 business days</li>
+                            <li>Refunds are issued within 10 business days</li>
+                            <li>Exchanges ship within 2 business days of processing</li>
+                        </ul>
+                        <p>You'll receive email notifications at each step of the process.</p>
+                    </div>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-question">
+                        <span>Do I have to pay for return shipping?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We provide free return shipping for domestic returns. International customers are responsible for
+ return shipping costs unless the return is due to our error (wrong item or defective product).</p>
+                    </div>
+                </div>
+                <!-- More sections would follow the same pattern -->
+            </div>
+            <!-- Contact Section -->
+            <div class="contact-section">
+                <h2 class="section-title">Still have questions?</h2>
+                <p class="text-center" style="margin-bottom: 40px; max-width: 700px; margin-left: auto; margin-right:
+ auto;">Can't find what you're looking for? Our customer service team is ready to help.</p>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" required></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <button type="submit" class="btn submit-btn">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>StyleHub</h3>
+                    <p>Premium men's fashion for the modern gentleman. Quality craftsmanship meets contemporary style.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                           <li><a href="home.html">Home</a></li>
+                            <li><a href="shop.html">Shop</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Customer Service</h3>
+                    <ul class="footer-links">
+                            <li><a href="FAQ.html" class="active">FAQs</a></li>
+                            <li><a href="FAQ.html">Shipping Policy</a></li>
+                            <li><a href="return.html">Returns & Exchanges</a></li>
+                            <li><a href="#">Order Tracking</a></li>
+                            <li><a href="sizeguide.html">Size Guide</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to get special offers, free giveaways, and new product alerts.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Your email address">
+                        <button type="submit" class="btn newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 StyleHub. All Rights Reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+   
+ </body>
+ </html>
